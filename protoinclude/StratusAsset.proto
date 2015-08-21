@@ -1,0 +1,14 @@
+package InWorldz.Data.Assets.Stratus;
+import "bcl.proto"; // schema for protobuf-net's handling of core .NET types
+
+message StratusAsset {
+   optional bcl.Guid Id = 1;
+   optional int32 Type = 2 [default = 0];
+   optional bool Local = 3 [default = false];
+   optional bool Temporary = 4 [default = false];
+   optional bcl.DateTime CreateTime = 5;
+   optional string Name = 6;
+   optional string Description = 7;
+   optional bytes Data = 8;
+   optional uint32 StorageFlags = 9 [default = 0];
+}
