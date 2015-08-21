@@ -43,7 +43,7 @@ set ( Aperture_srcs
         aperture/connection.cpp aperture/connection_manager.cpp
         aperture/HttpRequestHandler.cpp aperture/IAsset.cpp
         aperture/IAssetServer.cpp aperture/mime_types.cpp
-        aperture/posix_main.cpp aperture/RackspaceAuthorizer.cpp
+        aperture/RackspaceAuthorizer.cpp
         aperture/reply.cpp aperture/request_handler.cpp
         aperture/request_parser.cpp aperture/server.cpp
         aperture/ServerResponseMsg.cpp aperture/Settings.cpp
