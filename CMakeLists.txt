@@ -3,12 +3,12 @@ cmake_minimum_required(VERSION 3.6)
 PROJECT(aperture CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
-SET(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
-SET(CMAKE_VERBOSE_MAKEFILE ON)
-SET(CMAKE_COLOR_MAKEFILE ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_COLOR_MAKEFILE ON)
 
 IF (NOT CMAKE_BUILD_TYPE)
-  SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
+  set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
 	"Build type. One of: Debug Release RelWithDebInfo" FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
@@ -106,13 +106,12 @@ SET_SOURCE_FILES_PROPERTIES(${Aperture_PROTO}
 							PROPERTIES HEADER_FILE_ONLY TRUE)
 source_group("Prototype Files" FILES ${Aperture_PROTO})
 
-# include json_spirit
-set(INCLUDES ${INCLUDES} deps/json_spirit_v4.06/json_spirit )
-add_subdirectory(deps/json_spirit_v4.06)
-include_directories(${INCLUDES})
-
 # generated proto files are saved in the build directory
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/)
+
+# include json_spirit
+include_directories(${deps/json-spirit/json_spirit})
+ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/deps/json-spirit/json_spirit ${CMAKE_CURRENT_BINARY_DIR}/json-spirit)
 
 add_executable(aperture 
     ${Aperture_SRCS}
