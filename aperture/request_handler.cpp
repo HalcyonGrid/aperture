@@ -784,7 +784,7 @@ namespace http {
 
 			if (asset->getType() != AT_TEXTURE && asset->getType() != AT_MESH) {
                 std::string source;
-                int type;
+                int type = 0;
 
                 if (reqInfo.ServedFromCache) {
                     source = "cache";
