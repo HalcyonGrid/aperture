@@ -2,6 +2,7 @@
 
 #include "byte.h"
 #include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 namespace whip
 {
@@ -103,7 +104,7 @@ public:
 
 	ServerResponseMsg::ptr operator()()
 	{
-		return ServerResponseMsg::ptr(new ServerResponseMsg());
+		return boost::make_shared<ServerResponseMsg>();
 	}
 };
 }
