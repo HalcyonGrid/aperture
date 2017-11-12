@@ -19,16 +19,13 @@
 #include <boost/asio/steady_timer.hpp>
 #include <boost/array.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <boost/date_time/posix_time/posix_time_types.hpp> 
 
 #include "reply.hpp"
 #include "request.hpp"
 #include "request_handler.hpp"
 #include "request_parser.hpp"
 #include "AssetServer.h"
-#include "Settings.h"
 
 namespace http {
 namespace server {

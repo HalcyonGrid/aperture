@@ -21,7 +21,6 @@
 #include <limits>
 #include <algorithm>
 
-#include "mime_types.hpp"
 #include "Validator.h"
 #include "Settings.h"
 #include "AppLog.h"

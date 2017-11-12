@@ -1,14 +1,10 @@
 #include "stdafx.h"
 #include "RackspaceAuthorizer.h"
 
-#include <exception>
-#include <vector>
 #include <sstream>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
 
 #include <curl/curl.h>

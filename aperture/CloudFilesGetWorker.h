@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/asio/io_service.hpp>
