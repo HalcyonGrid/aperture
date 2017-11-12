@@ -7,6 +7,11 @@ mesh data to viewer software connected to the InWorldz grid
 - [CMake 3.8.2 or later](https://cmake.org/)
 - [Conan 0.28.1 or later](https://www.conan.io/)
 
+You will need to add the SlideWave LLC repository to obtain prebuilt packages:
+```
+conan remote add slidewave https://api.bintray.com/conan/slidewavellc/conan-libs
+```
+
 ### Sample cmake build command for Windows 64-bit
 
 ```
