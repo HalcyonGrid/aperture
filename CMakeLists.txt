@@ -28,7 +28,6 @@ set(Aperture_srcs
 set(INCLUDES ${INCLUDES} deps/json_spirit_v4.06/json_spirit )
 add_subdirectory(deps/json_spirit_v4.06)
 
-add_definitions(${DEFS})
 include_directories(${INCLUDES})
 add_executable( aperture ${Aperture_srcs})
 target_link_libraries(aperture ${CMAKE_THREAD_LIBS_INIT} ${CONAN_LIBS})
