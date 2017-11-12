@@ -12,6 +12,7 @@
 #include "AssetServer.h"
 #include "WhipURI.h"
 #include "CloudFilesConnector.h"
+#include "Version.h"
 
 #if defined(_WIN32)
 
@@ -33,8 +34,6 @@ BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
 	}
 }
 
-const std::string& VERSION = "2.53";
-
 int main(int argc, char* argv[])
 {
 	using namespace aperture;
@@ -45,7 +44,7 @@ int main(int argc, char* argv[])
 
 		AppLog::SetLogStream(&std::cout);
 
-		AppLog::instance().out() << "InWorldz Aperture Server " << VERSION << std::endl;
+		AppLog::instance().out() << "InWorldz Aperture Server " << APERTURE_VERSION << std::endl;
 		AppLog::instance().out() << "Build: " << __DATE__ " " __TIME__ << std::endl;
 
 		auto config = Settings::instance().config();

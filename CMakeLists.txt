@@ -93,6 +93,7 @@ set(Aperture_HDRS
     aperture/targetver.h
     aperture/TokenBucket.h
     aperture/Validator.h
+    aperture/Version.h
     aperture/WhipURI.h
     ${PROTO_HDRS}
     )
