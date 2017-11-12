@@ -1,3 +1,4 @@
+syntax = "proto2";
 // this is prototype only!!!
 
 package bcl;
