@@ -110,8 +110,17 @@ source_group("Prototype Files" FILES ${Aperture_PROTO})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/)
 
 # include json_spirit
-include_directories(${deps/json-spirit/json_spirit})
+include_directories(${deps/json-spirit/json_spirit}/)
 ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/deps/json-spirit/json_spirit ${CMAKE_CURRENT_BINARY_DIR}/json-spirit)
+
+if (MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+  if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+  else ()
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MT")
+  endif ()
+endif (MSVC)
 
 add_executable(aperture 
     ${Aperture_SRCS}
