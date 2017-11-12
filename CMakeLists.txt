@@ -109,10 +109,6 @@ source_group("Prototype Files" FILES ${Aperture_PROTO})
 # generated proto files are saved in the build directory
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/)
 
-# include json_spirit
-include_directories(${deps/json-spirit/json_spirit}/)
-ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/deps/json-spirit/json_spirit ${CMAKE_CURRENT_BINARY_DIR}/json-spirit)
-
 if (MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
   if (CMAKE_BUILD_TYPE STREQUAL "Debug")

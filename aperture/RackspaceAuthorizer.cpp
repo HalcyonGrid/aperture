@@ -11,11 +11,12 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
 
-#include "curl/curl.h"
-#include "json_spirit_reader_template.h"
+#include <curl/curl.h>
+#include <json.hpp>
 
 #include "Finally.h"
 
+using json = nlohmann::json;
 
 namespace aperture {
 namespace cloudfiles {
@@ -73,18 +74,15 @@ namespace cloudfiles {
 			throw std::runtime_error( (boost::format(__FILE__ " Authorization failed. HTTP Response: %1%, Body: %2%") % _reqHandler.getLastHttpCode() % _reqHandler.getLastBody().str()).str() );
 		}
 
-		json_spirit::mValue value;
-		if (! json_spirit::read_stream(_reqHandler.getLastBody(), value)) {
-			throw std::runtime_error((boost::format(__FILE__ " Parsing JSON failed. Body: %1%") % _reqHandler.getLastBody().str()).str());
-		}
+        json response;
+        _reqHandler.getLastBody() >> response;
 
-		const json_spirit::mObject& response = value.get_obj();
-		auto iaccess = response.find("access");
+        auto iaccess = response.find("access");
 		if (iaccess == response.end()) {
 			throw std::runtime_error((boost::format(__FILE__ " Parsing JSON failed. 'access' node not found. Body: %1%") % _reqHandler.getLastBody().str()).str());
 		}
 
-		const json_spirit::mObject& access = iaccess->second.get_obj();
+        auto access = response["access"];
 
 		//do we have a token?
 		auto itoken = access.find("token");
@@ -93,8 +91,8 @@ namespace cloudfiles {
 		}
 
 		//extract the token information
-		auto token = itoken->second.get_obj();
-		_authToken = token["id"].get_str();
+        auto token = access["token"];
+        _authToken = token["id"].get<std::string>();
 
 		auto iserviceCatalog = access.find("serviceCatalog");
 		if (iserviceCatalog == access.end()) {
@@ -103,25 +101,22 @@ namespace cloudfiles {
 
 		//the service catalog is a list
 		bool foundEndpoint = false;
-		const json_spirit::mArray& serviceCatalog = iserviceCatalog->second.get_array();
-		for (auto iObject : serviceCatalog) {
+        const auto serviceCatalog = access["serviceCatelog"];
+		for (auto object : serviceCatalog) {
 
-			auto object = iObject.get_obj();
-			if (object["name"].get_str() == "cloudFiles") {
+			if (object["name"].get<std::string>() == "cloudFiles") {
 
 				//this node we want. extract the endpoints and find the one we want
-				auto endpoints = object["endpoints"].get_array();
-				for (auto iendPoint : endpoints) {
-
-					auto endPoint = iendPoint.get_obj();
-					if (boost::iequals(endPoint["region"].get_str(), _regionName)) {
+				auto endpoints = object["endpoints"];
+				for (auto endPoint : endpoints) {
+					if (boost::iequals(endPoint["region"].get<std::string>(), _regionName)) {
 						//this is the region we want
 						foundEndpoint = true;
 
 						if (_useInternalUrl) {
-							_cfUrl = endPoint["internalURL"].get_str();
+							_cfUrl = endPoint["internalURL"].get<std::string>();
 						} else {
-							_cfUrl = endPoint["publicURL"].get_str();
+							_cfUrl = endPoint["publicURL"].get<std::string>();
 						}
 					}
 				}
