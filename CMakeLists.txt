@@ -2,15 +2,22 @@ cmake_minimum_required(VERSION 3.6)
 
 PROJECT(aperture CXX)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_COLOR_MAKEFILE ON)
+
+add_subdirectory(cmake)
+include(ucm)
 
 IF (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
 	"Build type. One of: Debug Release RelWithDebInfo" FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+
+ucm_set_runtime(STATIC)
 
 include(conanbuildinfo.cmake)
 conan_basic_setup()
@@ -109,12 +116,6 @@ source_group("Prototype Files" FILES ${Aperture_PROTO})
 
 # generated proto files are saved in the build directory
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/)
-
-if (MSVC)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-endif (MSVC)
 
 add_executable(aperture 
     ${Aperture_SRCS}
