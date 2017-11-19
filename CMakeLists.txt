@@ -16,11 +16,11 @@ IF (NOT CMAKE_BUILD_TYPE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 set(CMAKE_CXX_STANDARD 14)
-ucm_set_runtime(STATIC)
 
 include(conanbuildinfo.cmake)
 conan_basic_setup()
 
+ucm_set_runtime(DYNAMIC)
 ucm_print_flags()
 
 find_package(Threads REQUIRED)
