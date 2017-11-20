@@ -1,5 +1,5 @@
 [requires]
-Boost/1.64.0@conan/stable
+Boost/1.64.0@slidewave/stable
 jsonformoderncpp/2.1.1@vthiery/stable
 libcurl/7.56.1@slidewave/stable
 Protobuf/3.4.1@slidewave/stable
