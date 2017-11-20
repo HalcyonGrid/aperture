@@ -21,8 +21,6 @@ ucm_set_runtime(STATIC)
 include(conanbuildinfo.cmake)
 conan_basic_setup()
 
-ucm_print_flags()
-
 find_package(Threads REQUIRED)
 find_package(Protobuf REQUIRED)
 #find_package(Boost REQUIRED COMPONENTS chrono date_time program_options system thread)
