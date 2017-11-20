@@ -6,8 +6,10 @@ Protobuf/3.4.1@slidewave/stable
 zlib/1.2.11@conan/stable
 
 [options]
-Boost:shared=True
-Protobuf:shared=True
+Boost:shared=False
+libcurl:shared=False
+Protobuf:shared=False
+zlib:shared=False
 
 [generators]
 cmake
