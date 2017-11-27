@@ -13,7 +13,6 @@ Boost:without_coroutine=True
 Boost:without_coroutine2=True
 Boost:without_graph=True
 Boost:without_iostreams=True
-Boost:without_metaparse=True
 Boost:without_type_erasure=True
 Boost:without_wave=True
 libcurl:shared=False
