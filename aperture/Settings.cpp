@@ -8,9 +8,6 @@
 #include <boost/algorithm/string.hpp>
 #pragma warning(default:4996)
 
-#include <boost/foreach.hpp>
-#include <boost/lexical_cast.hpp>
-
 namespace po = boost::program_options;
 using namespace std;
 

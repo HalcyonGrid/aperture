@@ -3,7 +3,20 @@
 Aperture is a simple not quite compliant HTTP/1.1 server that sends texture and
 mesh data to viewer software connected to the InWorldz grid
 
-### Sample cmake build command for windows
+### Build requirements
+- [CMake 3.8.2 or later](https://cmake.org/)
+- [Conan 0.28.1 or later](https://www.conan.io/)
 
-cmake .. -DCMAKE_BUILD_TYPE=Debug -DCURL_LIBRARY=C:\lib\curl-7.44.0\builds\libcurl-vc-x64-debug-dll-ipv6-sspi-winssl\lib\libcurl_debug.lib -DCURL_INCLUDE_DIR=C:\lib\curl-7.44.0\include -DPROTOBUF_LIBRARY=C:\lib\protobuf-2.6.1\vsprojects\x64\Debug\libprotobuf.lib -DPROTOBUF_INCLUDE_DIR=C:\lib\protobuf-2.6.1\src -DPROTOBUF_PROTOC_EXECUTABLE=C:\lib\protobuf-2.6.1\vsprojects\x64\Debug\protoc.exe
--G "Visual Studio 14 2015 Win64"
+You will need to add the SlideWave LLC and the conan-community repositories to obtain prebuilt packages:
+```
+conan remote add slidewave https://api.bintray.com/conan/slidewavellc/conan-libs
+conan remote add conan-community https://api.bintray.com/conan/conan-community/conan
+```
+
+### Sample cmake build command for Windows 64-bit
+
+```
+conan install . -s build_type=Debug -s arch=x86_64 -s compiler.runtime=MTd --build=missing
+mkdir build && cd build
+cmake -G "Visual Studio 15 2017 Win64" .. -DCMAKE_BUILD_TYPE=Debug
+```

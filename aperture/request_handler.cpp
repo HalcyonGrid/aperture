@@ -21,13 +21,13 @@
 #include <limits>
 #include <algorithm>
 
-#include "mime_types.hpp"
 #include "Validator.h"
 #include "Settings.h"
 #include "AppLog.h"
 #include "header.hpp"
 #include "TokenBucket.h"
 #include "CloudFilesAsset.h"
+#include <boost/make_shared.hpp>
 
 using namespace aperture;
 
@@ -358,7 +358,7 @@ namespace http {
 			{
 				int bandwidth = boost::lexical_cast<int>(urlParts[6]);
 
-				_capsBuckets[urlParts[5]] = boost::shared_ptr<TokenBucket>(new TokenBucket(bandwidth));
+				_capsBuckets[urlParts[5]] = boost::make_shared<TokenBucket>(bandwidth);
 			}
 
 			rep = reply::stock_reply(reply::ok);
@@ -591,7 +591,7 @@ namespace http {
 				return;
 			}
 
-			_capsBuckets[urlParts[5]] = boost::shared_ptr<TokenBucket>(new TokenBucket(bwLimit));
+			_capsBuckets[urlParts[5]] = boost::make_shared<TokenBucket>(bwLimit);
 
 			rep = reply::stock_reply(reply::ok);
 			completionCallback();
@@ -783,7 +783,7 @@ namespace http {
 
 			if (asset->getType() != AT_TEXTURE && asset->getType() != AT_MESH) {
                 std::string source;
-                int type;
+                int type = 0;
 
                 if (reqInfo.ServedFromCache) {
                     source = "cache";

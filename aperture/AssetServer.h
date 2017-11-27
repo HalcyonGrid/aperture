@@ -10,12 +10,10 @@
 #include "IAsset.h"
 #include "IAssetServer.h"
 
-#include <boost/shared_ptr.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/function.hpp>
-#include <boost/tuple/tuple.hpp>
 
 #include <queue>
 #include <map>

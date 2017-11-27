@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iosfwd>
 #include <boost/shared_ptr.hpp>
 #include <boost/tuple/tuple.hpp>
 

@@ -1,61 +1,129 @@
-PROJECT( aperture )
-cmake_minimum_required(VERSION 3.2)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+cmake_minimum_required(VERSION 3.6)
 
-find_package( Threads REQUIRED)
+PROJECT(aperture CXX)
 
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_STATIC_RUNTIME OFF)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_COLOR_MAKEFILE ON)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(Boost_USE_DEBUG_RUNTIME 1)
-endif()
+add_subdirectory(cmake)
+include(ucm)
 
+IF (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
+	"Build type. One of: Debug Release RelWithDebInfo" FORCE)
+ENDIF(NOT CMAKE_BUILD_TYPE)
 
-set(DEFS ${DEFS} -DBOOST_ALL_DYN_LINK -DBOOST_ALL_NO_LIB)
+set(CMAKE_CXX_STANDARD 14)
+ucm_set_runtime(STATIC)
 
-find_package( Boost COMPONENTS thread system program_options date_time
-    chrono REQUIRED)
-set(INCLUDES ${INCLUDES} ${Boost_INCLUDE_DIR})
-set(LIBS ${LIBS} ${Boost_THREAD_LIBRARY} ${Boost_SYSTEM_LIBRARY}
-    ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_DATE_TIME_LIBRARY}
-    ${Boost_CHRONO_LIBRARY})
+include(conanbuildinfo.cmake)
+conan_basic_setup()
 
+find_package(Threads REQUIRED)
+find_package(Protobuf REQUIRED)
+#find_package(Boost REQUIRED COMPONENTS chrono date_time program_options system thread)
 
-find_package( Curl REQUIRED)
-set(INCLUDES ${INCLUDES} ${CURL_INCLUDE_DIRS})
-set(LIBS ${LIBS} ${CURL_LIBRARIES})
+# generate proto files
+set(Aperture_PROTO
+    protoinclude/bcl.proto
+    protoinclude/StratusAsset.proto)
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${Aperture_PROTO})
 
-
-find_package( Protobuf REQUIRED)
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
-    protoinclude/bcl.proto protoinclude/StratusAsset.proto)
-set(INCLUDES ${INCLUDES} ${PROTOBUF_INCLUDE_DIRS} ${CMAKE_BINARY_DIR})
-set(LIBS ${LIBS} ${PROTOBUF_LIBRARIES})
-message(${PROTOBUF_LIBRARIES})
-
-set ( Aperture_srcs
-        aperture/AppLog.cpp aperture/Asset.cpp
-        aperture/AssetServer.cpp aperture/AuthChallengeMsg.cpp
-        aperture/AuthResponseMsg.cpp aperture/AuthStatusMsg.cpp
-        aperture/ClientRequestMsg.cpp aperture/CloudFilesAsset.cpp
-        aperture/CloudFilesConnector.cpp aperture/CloudFilesGetWorker.cpp
-        aperture/connection.cpp aperture/connection_manager.cpp
-        aperture/HttpRequestHandler.cpp aperture/IAsset.cpp
-        aperture/IAssetServer.cpp aperture/mime_types.cpp
-        aperture/RackspaceAuthorizer.cpp
-        aperture/reply.cpp aperture/request_handler.cpp
-        aperture/request_parser.cpp aperture/server.cpp
-        aperture/ServerResponseMsg.cpp aperture/Settings.cpp
-        aperture/SHA1.cpp aperture/stdafx.cpp aperture/TokenBucket.cpp
-        aperture/Validator.cpp aperture/WhipURI.cpp aperture/win_main.cpp
-        ${PROTO_SRCS}
+set(Aperture_SRCS
+    aperture/AppLog.cpp
+    aperture/Asset.cpp
+    aperture/AssetServer.cpp 
+    aperture/AuthChallengeMsg.cpp
+    aperture/AuthResponseMsg.cpp
+    aperture/AuthStatusMsg.cpp
+    aperture/ClientRequestMsg.cpp
+    aperture/CloudFilesAsset.cpp
+    aperture/CloudFilesConnector.cpp
+    aperture/CloudFilesGetWorker.cpp
+    aperture/connection.cpp
+    aperture/connection_manager.cpp
+    aperture/HttpRequestHandler.cpp
+    aperture/IAsset.cpp
+    aperture/IAssetServer.cpp
+    aperture/mime_types.cpp
+    aperture/RackspaceAuthorizer.cpp
+    aperture/reply.cpp 
+    aperture/request_handler.cpp
+    aperture/request_parser.cpp
+    aperture/server.cpp
+    aperture/ServerResponseMsg.cpp
+    aperture/Settings.cpp
+    aperture/SHA1.cpp 
+    aperture/stdafx.cpp
+    aperture/TokenBucket.cpp
+    aperture/Validator.cpp
+    aperture/WhipURI.cpp
+    aperture/win_main.cpp
+    ${PROTO_SRCS}
     )
 
-set(INCLUDES ${INCLUDES} deps/json_spirit_v4.06/json_spirit )
-add_subdirectory(deps/json_spirit_v4.06)
+set(Aperture_HDRS
+    aperture/AppLog.h
+    aperture/Asset.h
+    aperture/AssetServer.h
+    aperture/AssetSizeCalculator.h
+    aperture/AuthChallengeMsg.h
+    aperture/AuthResponseMsg.h
+    aperture/AuthStatusMsg.h
+    aperture/byte.h
+    aperture/ClientRequestMsg.h
+    aperture/CloudFilesAsset.h
+    aperture/CloudFilesConnector.h
+    aperture/CloudFilesGetWorker.h
+    aperture/connection.hpp
+    aperture/connection_manager.hpp
+    aperture/Finally.h
+    aperture/header.hpp
+    aperture/HttpRequestHandler.h
+    aperture/IAsset.h
+    aperture/IAssetServer.h
+    aperture/lru_cache.h
+    aperture/mime_types.hpp
+    aperture/RackspaceAuthorizer.h
+    aperture/reply.hpp 
+    aperture/request.hpp
+    aperture/request_handler.hpp
+    aperture/request_parser.hpp
+    aperture/server.hpp
+    aperture/ServerResponseMsg.h
+    aperture/Settings.h
+    aperture/SHA1.h
+    aperture/stdafx.h
+    aperture/targetver.h
+    aperture/TokenBucket.h
+    aperture/Validator.h
+    aperture/Version.h
+    aperture/WhipURI.h
+    ${PROTO_HDRS}
+    )
 
-add_definitions(${DEFS})
-include_directories(${INCLUDES})
-add_executable( aperture ${Aperture_srcs})
-target_link_libraries(aperture ${CMAKE_THREAD_LIBS_INIT} ${CMAKE_DL_LIBS} ${LIBS} )
+LIST(APPEND Aperture_SRCS ${Aperture_HDRS})
+SET_SOURCE_FILES_PROPERTIES(${Aperture_HDRS}
+							PROPERTIES HEADER_FILE_ONLY TRUE)
+
+LIST(APPEND Aperture_SRCS ${Aperture_PROTO})
+SET_SOURCE_FILES_PROPERTIES(${Aperture_PROTO}
+							PROPERTIES HEADER_FILE_ONLY TRUE)
+source_group("Prototype Files" FILES ${Aperture_PROTO})
+
+# generated proto files are saved in the build directory
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/)
+
+add_executable(aperture 
+    ${Aperture_SRCS}
+    )
+target_link_libraries(aperture 
+    ${CMAKE_THREAD_LIBS_INIT}
+    ${CONAN_LIBS}
+    )
+
+IF (WIN32)
+  SET_PROPERTY(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT aperture)
+ENDIF(WIN32)
