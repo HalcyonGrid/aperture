@@ -24,9 +24,9 @@ build_script:
  #  - cmd: encryption_test.exe
 
 artifacts:
-  - path: 'aperture.exe'
+  - path: 'build\bin\aperture.exe'
     name: "Aperture"
     type: auto
-  - path: 'aperture.pdb'
+  - path: 'build\bin\aperture.pdb'
     name: "Aperture Symbols"
     type: auto
