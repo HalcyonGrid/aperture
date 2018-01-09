@@ -285,7 +285,7 @@ namespace http {
 			}
 
 			//otherwise, check to see if we have enough tokens to send now
-			int transmissionSize = std::min(reply_.remaining_bytes(), (size_t)reply_.token_bucket->getMaxBurst());
+			size_t transmissionSize = std::min(reply_.remaining_bytes(), (size_t)reply_.token_bucket->getMaxBurst());
 			if (reply_.token_bucket->removeTokens(transmissionSize))
 			{
 				//we have enough tokens, send out a chunk

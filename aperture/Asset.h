@@ -50,7 +50,7 @@ public:
 	/**
 		Returns the size of the binary asset data
 	*/
-	virtual unsigned int getBinaryDataSize() const;
+	virtual size_t getBinaryDataSize() const;
 
 	/**
 		Returns the internal data for this asset
@@ -70,12 +70,12 @@ public:
 	/**
 	 * Copies the asset data only to the given storage area
 	 */
-	virtual unsigned int copyAssetData(std::string& storage) const;
+	virtual size_t copyAssetData(std::string& storage) const;
 
 	/**
 	 * Copies the asset data only to the given storage area (rngStart + rngEnd are INCLUSIVE)
 	 */
-	virtual unsigned int copyAssetData(std::string& storage, unsigned int rngStart, unsigned int rngEnd) const;
+	virtual size_t copyAssetData(std::string& storage, size_t rngStart, size_t rngEnd) const;
 
 	/**
 	 * Finds the location and size of the actual internal asset binary data

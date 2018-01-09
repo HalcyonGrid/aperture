@@ -21,7 +21,7 @@ public:
 	 *
 	 * \returns True if the tokens could be removed, false if not
 	 */
-	bool removeTokens(int amount);
+	bool removeTokens(size_t amount);
 
 	/**
 	 * Adds tokens to the bucket based on the amount of time that has passed
@@ -33,11 +33,11 @@ public:
 	/**
 	 * Returns the maximum number of tokens this bucket can hold
 	 */
-	int getMaxBurst() const;
+	size_t getMaxBurst() const;
 
 private:
-	int _maxBurst;
-	int _tokens;
+	size_t _maxBurst;
+	size_t _tokens;
 	boost::chrono::steady_clock::time_point _lastDrip;
 	int _tokensPerMS;
 };

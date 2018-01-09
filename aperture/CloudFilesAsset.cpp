@@ -20,7 +20,7 @@ std::string CloudFilesAsset::getUUID() const
 	return _assetId;
 }
 
-unsigned int CloudFilesAsset::getBinaryDataSize() const
+    size_t CloudFilesAsset::getBinaryDataSize() const
 {
 	return _assetBase->data().length();
 }
@@ -35,13 +35,13 @@ int CloudFilesAsset::getFullType() const
 	return _assetBase->type();
 }
 
-unsigned int CloudFilesAsset::copyAssetData(std::string& storage) const
+size_t CloudFilesAsset::copyAssetData(std::string& storage) const
 {
 	storage = _assetBase->data();
 	return _assetBase->data().length();
 }
 
-unsigned int CloudFilesAsset::copyAssetData(std::string& storage, unsigned int rngStart, unsigned int rngEnd) const
+size_t CloudFilesAsset::copyAssetData(std::string& storage, size_t rngStart, size_t rngEnd) const
 {
 	auto dataSz = _assetBase->data().length();
 
