@@ -11,7 +11,6 @@ install:
   - cmd: conan user # Create the conan data directory
   - cmd: conan --version
   - cmd: conan remote add slidewave https://api.bintray.com/conan/slidewavellc/conan-libs
-  - cmd: conan remote add conan-community https://api.bintray.com/conan/conan-community/conan
 
 build_script:
   - cmd: mkdir build
@@ -25,9 +24,9 @@ build_script:
  #  - cmd: encryption_test.exe
 
 artifacts:
-   - path: 'bin\aperture.exe'
-     name: "Aperture"
-     type: auto
-   - path: 'bin\aperture.pdb'
-     name: "Aperture Symbols"
-     type: auto
+  - path: 'bin\aperture.exe'
+    name: "Aperture"
+    type: auto
+  - path: 'bin\aperture.pdb'
+    name: "Aperture Symbols"
+    type: auto
