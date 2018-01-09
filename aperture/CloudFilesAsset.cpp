@@ -20,7 +20,7 @@ std::string CloudFilesAsset::getUUID() const
 	return _assetId;
 }
 
-    size_t CloudFilesAsset::getBinaryDataSize() const
+size_t CloudFilesAsset::getBinaryDataSize() const
 {
 	return _assetBase->data().length();
 }

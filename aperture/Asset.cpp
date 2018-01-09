@@ -47,7 +47,7 @@ aperture::byte Asset::getType() const
 	return (*_data)[32];
 }
 
-    size_t Asset::getBinaryDataSize() const
+size_t Asset::getBinaryDataSize() const
 {
 	unsigned int loc, size;
 	boost::tie(loc, size) = this->findDataLocationAndSize();
@@ -74,7 +74,7 @@ boost::tuple<unsigned int, unsigned int> Asset::findDataLocationAndSize() const
 	return boost::tuple<unsigned int, unsigned int>(currLoc + sizeof(unsigned int), dataSz);
 }
 
-    size_t Asset::copyAssetData(std::string& storage) const 
+size_t Asset::copyAssetData(std::string& storage) const 
 {
 	unsigned int dataLoc;
 	unsigned int dataSz;
@@ -90,7 +90,7 @@ boost::tuple<unsigned int, unsigned int> Asset::findDataLocationAndSize() const
 	return dataSz;
 }
 
-    size_t Asset::copyAssetData(std::string& storage, size_t rngStart, size_t rngEnd) const
+size_t Asset::copyAssetData(std::string& storage, size_t rngStart, size_t rngEnd) const
 {
 	unsigned int dataLoc;
 	unsigned int dataSz;
