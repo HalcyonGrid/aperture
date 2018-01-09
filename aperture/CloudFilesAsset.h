@@ -22,11 +22,11 @@ public:
 	virtual ~CloudFilesAsset();
 
 	virtual std::string getUUID() const;
-	virtual unsigned int getBinaryDataSize() const;
+	virtual size_t getBinaryDataSize() const;
 	virtual aperture::byte getType() const;
     virtual int getFullType() const; //for debugging
-	virtual unsigned int copyAssetData(std::string& storage) const;
-	virtual unsigned int copyAssetData(std::string& storage, unsigned int rngStart, unsigned int rngEnd) const;
+	virtual size_t copyAssetData(std::string& storage) const;
+	virtual size_t copyAssetData(std::string& storage, size_t rngStart, size_t rngEnd) const;
 };
 
 }}

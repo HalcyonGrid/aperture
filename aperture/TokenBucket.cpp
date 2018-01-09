@@ -20,7 +20,7 @@ TokenBucket::~TokenBucket()
 {
 }
 
-bool TokenBucket::removeTokens(int amount)
+bool TokenBucket::removeTokens(size_t amount)
 {
 	this->drip();
 
@@ -34,20 +34,20 @@ bool TokenBucket::removeTokens(int amount)
 
 bool TokenBucket::drip()
 {
-	int deltaTime = bc::duration_cast<bc::milliseconds>(bc::steady_clock::now() - _lastDrip).count();
+	int_least64_t deltaTime = bc::duration_cast<bc::milliseconds>(bc::steady_clock::now() - _lastDrip).count();
 	if (deltaTime <= 0)
 	{
 		return false;
 	}
 
-	int tokens = _tokensPerMS * deltaTime;
+	size_t tokens = _tokensPerMS * deltaTime;
 	_tokens = std::min(_tokens + tokens, _maxBurst);
 
 	_lastDrip = bc::steady_clock::now();
 	return true;
 }
 
-int TokenBucket::getMaxBurst() const
+size_t TokenBucket::getMaxBurst() const
 {
 	return _maxBurst;
 }

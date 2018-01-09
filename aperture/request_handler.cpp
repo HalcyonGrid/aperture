@@ -817,7 +817,7 @@ namespace http {
 				_assetCache->insert(reqInfo.AssetId, asset);
 			}
 
-			unsigned int errorReportingFullSz = asset->getBinaryDataSize();
+			size_t errorReportingFullSz = asset->getBinaryDataSize();
 			try {
 				if (asset->getType() == AT_TEXTURE) {
 					this->sendResponse(reqInfo, asset, "image/x-j2c");
@@ -859,8 +859,7 @@ namespace http {
 
 		void request_handler::sendResponse(PackedRequestInfo& reqInfo, IAsset::ptr asset, const std::string& contentType)
 		{
-			unsigned int rngBegin = 0;
-			unsigned int rngEnd = 0;
+			size_t rngBegin, rngEnd = 0;
 
 			bool hasRangeHeader = false;
 
@@ -873,12 +872,9 @@ namespace http {
 				}
 			}
 
-			unsigned int fullSz;
-			if (hasRangeHeader) {
-				fullSz = asset->copyAssetData(reqInfo.Reply->content, rngBegin, rngEnd);
-			} else {
-				fullSz = asset->copyAssetData(reqInfo.Reply->content);
-			}
+			size_t fullSz = hasRangeHeader 
+			    ? asset->copyAssetData(reqInfo.Reply->content, rngBegin, rngEnd)
+			    : asset->copyAssetData(reqInfo.Reply->content);
 
 			if (rngEnd > (fullSz - 1)) rngEnd = (fullSz - 1);
 

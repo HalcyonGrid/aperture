@@ -11,11 +11,10 @@ install:
   - cmd: conan user # Create the conan data directory
   - cmd: conan --version
   - cmd: conan remote add slidewave https://api.bintray.com/conan/slidewavellc/conan-libs
-  - cmd: conan remote add conan-community https://api.bintray.com/conan/conan-community/conan
 
 build_script:
   - cmd: mkdir build
-  - cmd: conan install -s build_type=Release -s arch=x86_64 --build=missing
+  - cmd: conan install -s build_type=Release -s arch=x86_64 -s compiler.runtime=MT --build=missing
   - cmd: cd build
   - cmd: cmake ../ -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64"
   - cmd: cmake --build . --config Release
@@ -23,3 +22,11 @@ build_script:
  #test_script:
  #  - cmd: cd bin
  #  - cmd: encryption_test.exe
+
+artifacts:
+  - path: 'build\bin\aperture.exe'
+    name: "Aperture"
+    type: auto
+  - path: 'build\bin\aperture.pdb'
+    name: "Aperture Symbols"
+    type: auto

@@ -23,7 +23,7 @@ public:
 	/**
 	 * Returns the size of the binary asset data
 	 */
-	virtual unsigned int getBinaryDataSize() const = 0;
+	virtual size_t getBinaryDataSize() const = 0;
 
 	/**
      * Returns the type of asset this is
@@ -33,12 +33,12 @@ public:
 	/**
 	 * Copies the asset data only to the given storage area
 	 */
-	virtual unsigned int copyAssetData(std::string& storage) const = 0;
+	virtual size_t copyAssetData(std::string& storage) const = 0;
 
 	/**
 	 * Copies the asset data only to the given storage area (rngStart + rngEnd are INCLUSIVE)
 	 */
-	virtual unsigned int copyAssetData(std::string& storage, unsigned int rngStart, unsigned int rngEnd) const = 0;
+	virtual size_t copyAssetData(std::string& storage, size_t rngStart, size_t rngEnd) const = 0;
 };
 
 }
