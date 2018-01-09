@@ -24,7 +24,7 @@ build_script:
  #  - cmd: cd bin
  #  - cmd: encryption_test.exe
 
- artifacts:
+artifacts:
    - path: 'bin\aperture.exe'
      name: "Aperture"
      type: auto
