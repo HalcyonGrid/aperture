@@ -6,7 +6,6 @@ jsonformoderncpp/2.1.1@vthiery/stable
 zlib/1.2.11@conan/stable
 
 [options]
-Boost.Asio:shared=False
 libcurl:shared=False
 protobuf:shared=False
 zlib:shared=False
