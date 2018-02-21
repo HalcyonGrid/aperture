@@ -79,6 +79,7 @@ install:
   - pip install --user conan
   - conan user
   - conan remote add slidewave https://api.bintray.com/conan/slidewavellc/conan-libs
+  - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
 script:
   - conan install . -s build_type=Release --build=missing
   - cmake . -DCMAKE_BUILD_TYPE=Release 
