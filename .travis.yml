@@ -1,0 +1,17 @@
+language: cpp
+compiler:
+  - gcc
+install:
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq g++-4.9
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
+  
+  pip install conan
+  conan user
+
+  mkdir build
+  conan install -s build_type=Release --build=missing
+  cd build
+  cmake ../ -DCMAKE_BUILD_TYPE=Release 
+  cmake --build . --config Release
