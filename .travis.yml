@@ -1,18 +1,87 @@
 language: cpp
+sudo: required
+dist: trusty
+
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - george-edison55-precise-backports
+          packages:
+            - g++-4.9
+            - cmake-data
+            - cmake
+      env:
+         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - george-edison55-precise-backports
+          packages:
+            - g++-5
+            - cmake-data
+            - cmake
+      env:
+         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - george-edison55-precise-backports
+          packages:
+            - g++-6
+            - cmake-data
+            - cmake
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - george-edison55-precise-backports
+          packages:
+            - g++-7
+            - cmake-data
+            - cmake
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    # clang
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.8
+            - george-edison55-precise-backports
+          packages:
+            - clang-3.8
+            - cmake-data
+            - cmake
+      env:
+        - MATRIX_EVAL="CC=clang-3.8 && CXX=clang++-3.8"
+    # OSX
+    - os: osx
+      osx_image: xcode8
+      env:
+        - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+before_install:
+    - eval "${MATRIX_EVAL}"
 compiler:
   - gcc
 install:
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq g++-4.9
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
-  
-  pip install conan
-  conan user
-
-  mkdir build
-  conan install -s build_type=Release --build=missing
-  cd build
-  cmake ../ -DCMAKE_BUILD_TYPE=Release 
-  cmake --build . --config Release
+  - pip install conan
+  - conan user
+script:
+  - mkdir build
+  - conan install -s build_type=Release --build=missing
+  - cd build
+  - cmake ../ -DCMAKE_BUILD_TYPE=Release 
+  - cmake --build . --config Release
 
