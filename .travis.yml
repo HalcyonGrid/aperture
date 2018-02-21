@@ -79,9 +79,7 @@ install:
   - pip install --user conan
   - conan user
 script:
-  - mkdir build
-  - conan install -s build_type=Release --build=missing
-  - cd build
+  - conan install ../ -s build_type=Release --build=missing
   - cmake ../ -DCMAKE_BUILD_TYPE=Release 
-  - cmake --build . --config Release
+  - cmake --build ../ --config Release
 
