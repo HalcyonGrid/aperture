@@ -14,7 +14,7 @@ namespace whip
 {
 
 /* static */
-const aperture::byte AuthResponseMsg::PACKET_IDENTIFIER = 1;
+const aperture::byte AuthResponseMsg::PACKET_IDENTIFIER = 0;
 /* static */
 const aperture::byte AuthResponseMsg::SERVER_IDENTIFIER = 100;
 
