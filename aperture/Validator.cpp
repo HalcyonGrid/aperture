@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Validator.h"
 
 #include <boost/foreach.hpp>

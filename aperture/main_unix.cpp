@@ -1,10 +1,8 @@
-#include "stdafx.h"
+#ifdef _WIN32
+#  error This should never be included on Windows!
+#else
 
-#include <iostream>
-#include <string>
-#include <boost/asio.hpp>
-#include <boost/bind.hpp>
-#include <boost/function.hpp>
+#include "stdafx.h"
 
 #include "server.hpp"
 #include "AppLog.h"
@@ -12,27 +10,23 @@
 #include "AssetServer.h"
 #include "WhipURI.h"
 #include "CloudFilesConnector.h"
-#include "Version.h"
 
-#if defined(_WIN32)
+#include <iostream>
+#include <string>
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+#include <signal.h>
 
 boost::function0<void> console_ctrl_function;
 
-BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
+void console_ctrl_handler(int sig)
 {
-	switch (ctrl_type)
-	{
-	case CTRL_C_EVENT:
-	case CTRL_BREAK_EVENT:
-	case CTRL_CLOSE_EVENT:
-	case CTRL_SHUTDOWN_EVENT:
-		aperture::AppLog::instance().out() << "Clean shutdown initiated" << std::endl;
-		console_ctrl_function();
-		return TRUE;
-	default:
-		return FALSE;
-	}
+	aperture::AppLog::instance().out() << "Clean shutdown initiated" << std::endl;
+	console_ctrl_function();
 }
+
+const std::string& VERSION = "2.53";
 
 int main(int argc, char* argv[])
 {
@@ -44,7 +38,7 @@ int main(int argc, char* argv[])
 
 		AppLog::SetLogStream(&std::cout);
 
-		AppLog::instance().out() << "InWorldz Aperture Server " << APERTURE_VERSION << std::endl;
+		AppLog::instance().out() << "InWorldz Aperture Server " << VERSION << std::endl;
 		AppLog::instance().out() << "Build: " << __DATE__ " " __TIME__ << std::endl;
 
 		auto config = Settings::instance().config();
@@ -69,12 +63,13 @@ int main(int argc, char* argv[])
 
 		// Initialize server
 		std::string capsToken = config["caps_token"].as<std::string>();
-		http::server::server s(config["http_listen_port"].as<unsigned short>(), 
+		http::server::server s(config["http_listen_port"].as<unsigned short>(),
 			ioService, assetServer, cfConnector, capsToken);
 
 		// Set console control handler to allow server to be stopped.
 		console_ctrl_function = boost::bind(&http::server::server::stop, &s);
-		SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+		//SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+    signal(SIGINT, console_ctrl_handler);
 
 		// Run the server until stopped.
 		s.run();
@@ -88,4 +83,5 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-#endif // defined(_WIN32)
+#endif // !defined(_WIN32)
+
