@@ -129,9 +129,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/)
 add_executable(aperture 
     ${Aperture_SRCS}
     )
-add_precompiled_header(aperture
-    aperture/stdafx.h FORCEINCLUDE
-    SOURCE_CXX aperture/stdafx.cpp
+add_precompiled_header(aperture aperture/stdafx.h 
+    FORCEINCLUDE SOURCE_CXX aperture/stdafx.cpp
     )
 target_link_libraries(aperture 
     ${CMAKE_THREAD_LIBS_INIT}

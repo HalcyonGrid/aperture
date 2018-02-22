@@ -80,10 +80,10 @@ function(add_precompiled_header _target _input)
 
   get_filename_component(_input_we ${_input} NAME_WE)
   if(NOT _PCH_SOURCE_CXX)
-    set(_PCH_SOURCE_CXX "${_input_we}.cpp")
+    set(_PCH_SOURCE_CXX "aperture/${_input_we}.cpp")
   endif()
   if(NOT _PCH_SOURCE_C)
-    set(_PCH_SOURCE_C "${_input_we}.c")
+    set(_PCH_SOURCE_C "aperture/${_input_we}.c")
   endif()
 
   if(MSVC)
