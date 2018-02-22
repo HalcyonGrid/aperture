@@ -63,7 +63,7 @@ install:
   - conan user
   - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
 script:
-  - conan install . -s build_type=Release --build=missing
+  - conan install . -s build_type=Release --build=missing --build=libcurl
   - cmake . -DCMAKE_BUILD_TYPE=Release 
   - cmake --build . --config Release
 
