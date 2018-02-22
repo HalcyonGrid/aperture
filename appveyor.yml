@@ -10,7 +10,6 @@ install:
   - cmd: pip.exe install conan --upgrade
   - cmd: conan user # Create the conan data directory
   - cmd: conan --version
-  - cmd: conan remote add slidewave https://api.bintray.com/conan/slidewavellc/conan-libs
   - cmd: conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
 
 build_script:
