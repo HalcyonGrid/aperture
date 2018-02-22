@@ -58,6 +58,7 @@ set(Aperture_SRCS
     aperture/ServerResponseMsg.cpp
     aperture/Settings.cpp
     aperture/SHA1.cpp 
+    aperture/stdafx.cpp
     aperture/TokenBucket.cpp
     aperture/Validator.cpp
     aperture/WhipURI.cpp
@@ -95,6 +96,7 @@ set(Aperture_HDRS
     aperture/ServerResponseMsg.h
     aperture/Settings.h
     aperture/SHA1.h
+    aperture/stdafx.h
     aperture/targetver.h
     aperture/TokenBucket.h
     aperture/Validator.h
@@ -128,9 +130,6 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/)
 
 add_executable(aperture 
     ${Aperture_SRCS}
-    )
-add_precompiled_header(aperture aperture/stdafx.h 
-    FORCEINCLUDE SOURCE_CXX aperture/stdafx.cpp
     )
 target_link_libraries(aperture 
     ${CMAKE_THREAD_LIBS_INIT}
