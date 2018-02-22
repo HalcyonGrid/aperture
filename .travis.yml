@@ -11,18 +11,6 @@ matrix:
             - ubuntu-toolchain-r-test
             - george-edison55-precise-backports
           packages:
-            - g++-4.9
-            - cmake-data
-            - cmake
-      env:
-         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - george-edison55-precise-backports
-          packages:
             - g++-5
             - cmake-data
             - cmake
@@ -66,11 +54,6 @@ matrix:
             - cmake
       env:
         - MATRIX_EVAL="CC=clang-3.8 && CXX=clang++-3.8"
-    # OSX
-    - os: osx
-      osx_image: xcode8
-      env:
-        - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 before_install:
     - eval "${MATRIX_EVAL}"
 compiler:

@@ -1,6 +1,7 @@
 [requires]
 Boost.Asio/1.65.1@bincrafters/stable
 Boost.Format/1.65.1@bincrafters/stable
+Boost.Build/1.65.1@bincrafters/stable
 Boost.Logic/1.65.1@bincrafters/stable
 Boost.Program_Options/1.65.1@bincrafters/stable
 libcurl/7.56.1@bincrafters/stable
