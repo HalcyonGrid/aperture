@@ -20,7 +20,7 @@ enum AuthStatus
 class AuthStatusMsg
 {
 private:
-	static const aperture::byte PACKET_IDENTIFIER = 1;
+	static const aperture::byte PACKET_IDENTIFIER;
 
 	aperture::byte_array _messageData;
 

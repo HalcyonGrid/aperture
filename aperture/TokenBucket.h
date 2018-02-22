@@ -13,7 +13,7 @@ public:
 	/**
 	 * Constructor passing the maximum bandwidth in kB/s and the drip period
 	 */
-	TokenBucket(int maxBandwidth);
+	TokenBucket(size_t maxBandwidth);
 	virtual ~TokenBucket();
 
 	/**

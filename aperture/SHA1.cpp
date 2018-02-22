@@ -6,8 +6,8 @@
 	See header file for version history.
 */
 
-// If compiling with MFC, you might want to add #include "StdAfx.h"
-#include "StdAfx.h"
+// If compiling with MFC, you might want to add #include "stdafx.h"
+#include "stdafx.h"
 
 #include <boost/algorithm/string.hpp>
 

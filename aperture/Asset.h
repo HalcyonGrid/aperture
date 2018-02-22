@@ -39,7 +39,7 @@ public:
 		Returns the UUID of this asset from the first 32 bytes 
 		of packet data
 	*/
-	virtual std::string getUUID() const;
+	std::string getUUID() const override;
 
 	/**
 		Returns the size of the data array holding the asset
@@ -50,7 +50,7 @@ public:
 	/**
 		Returns the size of the binary asset data
 	*/
-	virtual size_t getBinaryDataSize() const;
+	size_t getBinaryDataSize() const override;
 
 	/**
 		Returns the internal data for this asset
@@ -65,17 +65,17 @@ public:
 	/**
 		Returns the type of asset this is
 	*/
-	virtual aperture::byte getType() const;
+	aperture::byte getType() const override;
 
 	/**
 	 * Copies the asset data only to the given storage area
 	 */
-	virtual size_t copyAssetData(std::string& storage) const;
+	size_t copyAssetData(std::string& storage) const override;
 
 	/**
 	 * Copies the asset data only to the given storage area (rngStart + rngEnd are INCLUSIVE)
 	 */
-	virtual size_t copyAssetData(std::string& storage, size_t rngStart, size_t rngEnd) const;
+	size_t copyAssetData(std::string& storage, size_t rngStart, size_t rngEnd) const override;
 
 	/**
 	 * Finds the location and size of the actual internal asset binary data

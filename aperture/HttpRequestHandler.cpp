@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "HttpRequestHandler.h"
 
-#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 
 
 namespace aperture {

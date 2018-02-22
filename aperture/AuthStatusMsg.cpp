@@ -1,8 +1,12 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "AuthStatusMsg.h"
 
 namespace whip
 {
+
+/* static */
+const aperture::byte AuthStatusMsg::PACKET_IDENTIFIER = 1;
+
 AuthStatusMsg::AuthStatusMsg()
 : _messageData(MESSAGE_SIZE)
 {
@@ -39,16 +43,12 @@ bool AuthStatusMsg::validate() const
 		return false;
 	}
 
-	if (_messageData[0] != PACKET_IDENTIFIER) {
+	if (_messageData[0] != AuthStatusMsg::PACKET_IDENTIFIER) {
 		return false;
 	}
 
-	if (_messageData[1] != AS_AUTH_SUCCESS &&
-		_messageData[1] != AS_AUTH_FAILURE)
-	{
-		return false;
-	}
+	return !(_messageData[1] != AS_AUTH_SUCCESS &&
+    		_messageData[1] != AS_AUTH_FAILURE);
 
-	return true;
 }
 }

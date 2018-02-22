@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 
 #include "AppLog.h"
 #include <boost/date_time/posix_time/posix_time.hpp>

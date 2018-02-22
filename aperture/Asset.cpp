@@ -1,9 +1,7 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Asset.h"
-#include "Winsock2.h"
 
 #include <boost/numeric/conversion/cast.hpp>
-#include <stdexcept>
 
 namespace whip
 {
@@ -13,7 +11,7 @@ Asset::Asset(unsigned int sizeHint)
 }
 
 Asset::Asset(aperture::byte_array_ptr data)
-: _data(data)
+: _data(std::move(data))
 {
 
 }

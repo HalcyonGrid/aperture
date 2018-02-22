@@ -10,8 +10,8 @@ namespace whip
 class AuthChallengeMsg
 {
 private:
-	const static short PHRASE_SIZE = 7;
-	const static aperture::byte PACKET_IDENTIFIER = 0;
+	static const short PHRASE_SIZE;
+	static const aperture::byte PACKET_IDENTIFIER;
 	aperture::byte_array _data;
 	
 	void generatePhrase();

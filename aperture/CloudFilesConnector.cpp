@@ -59,7 +59,7 @@ bool CloudFilesConnector::isConnected() const
 void CloudFilesConnector::getAsset(const std::string& uuid, boost::function<void (IAsset::ptr)> callBack)
 {
 	boost::mutex::scoped_lock lock(_queueMutex);
-	_workQueue.push(std::tie(uuid, callBack));
+	_workQueue.emplace(std::tie(uuid, callBack));
 	_signal.notify_one();
 }
 

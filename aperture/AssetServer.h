@@ -167,7 +167,7 @@ namespace whip
 		/**
 		 * Retrieves the given asset from this server
 		 */
-		virtual void AssetServer::getAsset(const std::string& uuid, boost::function<void (aperture::IAsset::ptr)> callBack);
+		virtual void getAsset(const std::string& uuid, boost::function<void (aperture::IAsset::ptr)> callBack);
 
 		/**
 		 * Shuts down the connections and marks this server as shut down

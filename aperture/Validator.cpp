@@ -1,7 +1,5 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Validator.h"
-
-#include <boost/foreach.hpp>
 
 Validator::Validator()
 {
@@ -19,7 +17,7 @@ bool Validator::IsValidUUID(const std::string& uuid)
 	}
 
 	//each character can only be 0-9 or the letters a-f
-	BOOST_FOREACH(char ch, uuid) {
+	for (char ch : uuid) {
 		if ((ch < '0' || ch > '9') && (ch < 'a' || ch > 'f')) {
 			return false;
 		}
