@@ -1,21 +1,16 @@
 [requires]
-Boost/1.64.0@slidewave/stable
+Boost.Asio/1.65.1@bincrafters/stable
+Boost.Format/1.65.1@bincrafters/stable
+Boost.Logic/1.65.1@bincrafters/stable
+Boost.Program_Options/1.65.1@bincrafters/stable
+libcurl/7.56.1@bincrafters/stable
+protobuf/3.5.1@bincrafters/stable
 jsonformoderncpp/2.1.1@vthiery/stable
-libcurl/7.56.1@slidewave/stable
-Protobuf/3.5.1@slidewave/stable
 zlib/1.2.11@conan/stable
 
 [options]
-Boost:shared=False
-Boost:without_container=True
-Boost:without_context=True
-Boost:without_coroutine=True
-Boost:without_coroutine2=True
-Boost:without_graph=True
-Boost:without_type_erasure=True
-Boost:without_wave=True
 libcurl:shared=False
-Protobuf:shared=False
+protobuf:shared=False
 zlib:shared=False
 
 [generators]
