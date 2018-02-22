@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Asset.h"
-#include "Winsock2.h"
 
 #include <boost/numeric/conversion/cast.hpp>
 #include <stdexcept>
