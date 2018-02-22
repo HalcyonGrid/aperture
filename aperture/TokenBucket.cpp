@@ -6,7 +6,7 @@ namespace bc = boost::chrono;
 const float TokenBucket::DRIP_PERIOD = 0.0156f;
 const int TokenBucket::DRIP_PERIOD_PERIOD_MS = 15;
 
-TokenBucket::TokenBucket(int maxBandwidth)
+TokenBucket::TokenBucket(size_t maxBandwidth)
 	: _maxBurst(maxBandwidth), _tokens(_maxBurst), _lastDrip(bc::steady_clock::now()),
 	_tokensPerMS(maxBandwidth / 1000)
 {

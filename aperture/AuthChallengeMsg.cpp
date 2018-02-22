@@ -3,6 +3,10 @@
 
 namespace whip
 {
+/* static */
+const short AuthChallengeMsg::PHRASE_SIZE = 7;
+/* static */
+const aperture::byte AuthChallengeMsg::PACKET_IDENTIFIER = 0;
 
 AuthChallengeMsg::AuthChallengeMsg(bool inbound)
 {

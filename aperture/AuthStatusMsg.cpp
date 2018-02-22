@@ -47,12 +47,8 @@ bool AuthStatusMsg::validate() const
 		return false;
 	}
 
-	if (_messageData[1] != AS_AUTH_SUCCESS &&
-		_messageData[1] != AS_AUTH_FAILURE)
-	{
-		return false;
-	}
+	return !(_messageData[1] != AS_AUTH_SUCCESS &&
+    		_messageData[1] != AS_AUTH_FAILURE);
 
-	return true;
 }
 }

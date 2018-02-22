@@ -11,8 +11,6 @@
 #include "stdafx.h"
 
 #include "connection_manager.hpp"
-#include <algorithm>
-#include <boost/bind.hpp>
 
 
 namespace http {

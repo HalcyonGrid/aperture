@@ -10,7 +10,7 @@ ClientRequestMsg::ClientRequestMsg()
 ClientRequestMsg::ClientRequestMsg(RequestType type, const std::string& uuid)
 {
 	_header.push_back((aperture::byte) type);
-	_header.insert(_header.end(), uuid.begin(), uuid.end());
+	std::copy(uuid.begin(), uuid.end(), std::back_inserter(_header));
 	//four zero bytes for the size
 	_header.insert(_header.end(), 4, 0);
 }
@@ -35,7 +35,7 @@ aperture::byte_array& ClientRequestMsg::getHeaderData()
 ClientRequestMsg::RequestType ClientRequestMsg::getType() const
 {
 	//make sure we actually have a valid header
-	if (_header.size() == 0 || (_header[0] < RT_GET || _header[0] > RT_TEST)) {
+	if (_header.empty() || (_header[0] < RT_GET || _header[0] > RT_TEST)) {
 		throw std::runtime_error("Bad request, invalid header on ClientRequest");
 	}
 

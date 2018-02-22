@@ -1,13 +1,7 @@
 #include "stdafx.h"
+
 #include "AssetServer.h"
 #include "AppLog.h"
-#include "ClientRequestMsg.h"
-#include "ServerResponseMsg.h"
-
-#include <boost/bind.hpp>
-#include <boost/foreach.hpp>
-
-#include <string>
 
 using namespace boost::posix_time;
 using boost::asio::ip::tcp;
@@ -52,12 +46,11 @@ namespace whip
 
 			//kill all transfer requests
 			
-			for (PendingTransferMap::iterator i = _pendingTransfers.begin(); 
-				i != _pendingTransfers.end(); ++i)
+			for (auto &_pendingTransfer : _pendingTransfers)
 			{
-				AssetCallbackList& callbacks = i->second;
+				AssetCallbackList& callbacks = _pendingTransfer.second;
 				Asset::ptr nullAsset;
-				BOOST_FOREACH(boost::function<void (Asset::ptr)> callback, callbacks)
+				for (boost::function<void (Asset::ptr)> callback : callbacks)
 				{
 					callback(nullAsset);
 				}
@@ -250,7 +243,7 @@ namespace whip
 			//we have a transfer in progess for this specific UUID, so the only step taken
 			//is to add another tracker for when this asset is available
 			//we dont have to send out another request
-			_pendingTransfers[uuid].push_back(callBack);
+			_pendingTransfers[uuid].emplace_back(callBack);
 
 		} else {
 			//transfer(s) in progress but nothing for the asset we're looking for
@@ -267,7 +260,7 @@ namespace whip
 			if (_pendingTransfers.size() == 0) {
 				//queue the callback for when this asset comes in
 				AssetCallbackList callBacks;
-				callBacks.push_back(callBack);
+				callBacks.emplace_back(callBack);
 				_pendingTransfers[uuid] = callBacks;
 
 				//just me in here, fire off the recv process
@@ -277,7 +270,7 @@ namespace whip
 				//queue the callback for when this asset comes in,
 				//someone else is already recv and will call me in time
 				AssetCallbackList callBacks;
-				callBacks.push_back(callBack);
+				callBacks.emplace_back(callBack);
 				_pendingTransfers[uuid] = callBacks;
 
 			}
@@ -299,7 +292,7 @@ namespace whip
 
 	void AssetServer::tryProcessNextSendItem()
 	{
-		if (_pendingSends.size() > 0) {
+		if (!_pendingSends.empty()) {
 			this->processNextSendItem();
 		}
 	}
@@ -410,7 +403,7 @@ namespace whip
 		PendingTransferMap::iterator i = _pendingTransfers.find(assetUUID);
 		if (i != _pendingTransfers.end()) {
 			AssetCallbackList& callbacks = i->second;
-			BOOST_FOREACH(boost::function<void (Asset::ptr)> callback, callbacks)
+			for (const boost::function<void (Asset::ptr)> &callback : callbacks)
 			{
 				callback(asset);
 			}
@@ -422,7 +415,7 @@ namespace whip
 	
 	void AssetServer::testContinueRecv()
 	{
-		if (_pendingTransfers.size() > 0) {
+		if (!_pendingTransfers.empty()) {
 			this->beginResponseHeaderRead();
 		}
 	}

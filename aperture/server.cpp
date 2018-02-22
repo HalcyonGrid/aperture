@@ -11,7 +11,6 @@
 #include "stdafx.h"
 
 #include "server.hpp"
-#include <boost/bind.hpp>
 
 #include "AppLog.h"
 #include "Settings.h"

@@ -30,7 +30,7 @@ AuthResponseMsg::AuthResponseMsg(const std::string& challenge, const std::string
 
 	//calculate our response
 	string correctHash = this->calculateChallengeResponse(challenge, password);
-	_data.insert(_data.end(), correctHash.begin(), correctHash.end());
+	std::move(correctHash.begin(), correctHash.end(), std::back_inserter(_data));
 }
 
 AuthResponseMsg::~AuthResponseMsg()
@@ -64,11 +64,8 @@ bool AuthResponseMsg::isValid(AuthChallengeMsg::ptr authChallenge)
 	string correctHash = this->calculateChallengeResponse(authChallenge->getPhrase(),
 		Settings::instance().config()["password"].as<string>());
 
-	if (correctHash == this->getChallengeResponse()) {
-		return true;
-	}
+	return correctHash == this->getChallengeResponse();
 
-	return false;
 }
 
 std::string AuthResponseMsg::calculateChallengeResponse(const std::string& phrase, const std::string& password)
