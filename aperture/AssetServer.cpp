@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "AssetServer.h"
 #include "AppLog.h"
 #include "ClientRequestMsg.h"

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 
 #include <string>
 #include <boost/numeric/conversion/cast.hpp>

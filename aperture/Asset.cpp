@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Asset.h"
 #include "Winsock2.h"
 
