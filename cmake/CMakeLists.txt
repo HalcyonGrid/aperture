@@ -3,6 +3,7 @@
 SET(cmake_SOURCE_FILES
 	CMakeLists.txt
 	
+    PrecompiledHeader.cmake
 	ucm.cmake
 	)
 SOURCE_GROUP("Shared Rules" FILES ${cmake_SOURCE_FILES})

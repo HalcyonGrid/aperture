@@ -8,6 +8,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_COLOR_MAKEFILE ON)
 
 add_subdirectory(cmake)
+include(PrecompiledHeader)
 include(ucm)
 
 IF (NOT CMAKE_BUILD_TYPE)
@@ -57,11 +58,9 @@ set(Aperture_SRCS
     aperture/ServerResponseMsg.cpp
     aperture/Settings.cpp
     aperture/SHA1.cpp 
-    aperture/stdafx.cpp
     aperture/TokenBucket.cpp
     aperture/Validator.cpp
     aperture/WhipURI.cpp
-    aperture/win_main.cpp
     ${PROTO_SRCS}
     )
 
@@ -96,7 +95,6 @@ set(Aperture_HDRS
     aperture/ServerResponseMsg.h
     aperture/Settings.h
     aperture/SHA1.h
-    aperture/stdafx.h
     aperture/targetver.h
     aperture/TokenBucket.h
     aperture/Validator.h
@@ -104,6 +102,17 @@ set(Aperture_HDRS
     aperture/WhipURI.h
     ${PROTO_HDRS}
     )
+
+if (WIN32)
+    LIST(APPEND Aperture_SRCS
+         aperture/main_win.cpp
+         )
+endif (WIN32)
+if (UNIX)
+    LIST(APPEND Aperture_SRCS
+        aperture/main_unix.cpp
+        )
+endif (UNIX)
 
 LIST(APPEND Aperture_SRCS ${Aperture_HDRS})
 SET_SOURCE_FILES_PROPERTIES(${Aperture_HDRS}
@@ -119,6 +128,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/)
 
 add_executable(aperture 
     ${Aperture_SRCS}
+    )
+add_precompiled_header(aperture
+    aperture/stdafx.h FORCEINCLUDE
+    SOURCE_CXX aperture/stdafx.cpp
     )
 target_link_libraries(aperture 
     ${CMAKE_THREAD_LIBS_INIT}
