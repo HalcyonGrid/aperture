@@ -6,8 +6,6 @@
 #ifndef AP_STDAFX_H_
 #define AP_STDAFX_H_
 
-#include "targetver.h"
-
 #include <stdio.h>
 
 #include <string>
@@ -15,10 +13,7 @@
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
-#include <boost/algorithm/string.hpp>  
-
-#include "AppLog.h"
-#include "Settings.h"
+#include <boost/algorithm/string.hpp>
 
 #endif // AP_STDAFX_H_
 
