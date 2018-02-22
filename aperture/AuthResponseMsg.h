@@ -12,8 +12,8 @@ namespace whip
 class AuthResponseMsg
 {
 private:
-	const static aperture::byte PACKET_IDENTIFIER = 0;
-	const static aperture::byte SERVER_IDENTIFIER = 100;
+	const static aperture::byte PACKET_IDENTIFIER;
+	const static aperture::byte SERVER_IDENTIFIER;
 
 	const static short RESPONSE_SIZE = 40;
 	
