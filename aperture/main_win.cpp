@@ -14,7 +14,9 @@
 #include "CloudFilesConnector.h"
 #include "Version.h"
 
-#if defined(_WIN32)
+#ifndef _WIN32
+#  error "This file should only be included on Windows!
+#else
 
 boost::function0<void> console_ctrl_function;
 

@@ -1,3 +1,7 @@
+#ifdef _WIN32
+#  error This should never be included on Windows!
+#else
+
 #include "stdafx.h"
 
 #include "server.hpp"
@@ -78,4 +82,6 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+
+#endif // !defined(_WIN32)
 
