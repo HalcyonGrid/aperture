@@ -52,15 +52,7 @@
 			"dependsOn": [
 				"Step 2: Prepare build system"
 			],
-			"windows": {
-				"command": "todo"
-			},
-			"linux": {
-				"command": "make",
-				"args": [
-					"-j${nproc}"
-				]
-			},
+			"command": "cmake --build . --config Debug",
 			"problemMatcher": {
 				"owner": "cpp",
 				"fileLocation": ["absolute"],
