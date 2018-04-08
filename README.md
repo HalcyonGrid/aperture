@@ -20,12 +20,14 @@ mkdir build
 cd build && cmake -G "Visual Studio 15 2017 Win64" .. -DCMAKE_BUILD_TYPE=Debug
 ```
 
+Then open the resulting project file in Visual Studio and compile.
+
 ## Directions for Ubuntu 16.04 LTS 64-bit
 
 ```bash
 conan install . -s build_type=Debug -s arch=x86_64 --build=missing
 mkdir build
-cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug
+cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug && make
 ```
 
 ## A bare-bones `aperture.cfg` file
