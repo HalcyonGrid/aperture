@@ -1,0 +1,104 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Step 1: Get requirements (conan)",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"windows": {
+				"command": "conan install . -s build_type=Debug -s arch=x86_64 -s compiler.runtime=MTd --build=missing",
+			},
+			"linux": {
+				"command": "conan install . -s build_type=Debug -s arch=x86_64 --build=missing",
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Step 2: Prepare build system",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"dependsOn": [
+				"Step 1: Get requirements (conan)"
+			],
+			"windows": {
+				"command": ".vscode\\cmakebuild.bat"
+			},
+			"linux": {
+				"command": ".vscode/cmakebuild.sh"
+			},
+			"problemMatcher": {
+				"owner": "cpp",
+				"fileLocation": ["absolute"],
+				"pattern": {
+						"regexp": "^(.*):(\\d+):\\s+(.*)$",
+						"file": 1,
+						"line": 2,
+						"message": 3
+				}
+			}
+		},
+		{
+			"label": "Step 3: Build Aperture",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"dependsOn": [
+				"Step 2: Prepare build system"
+			],
+			"windows": {
+				"command": "todo"
+			},
+			"linux": {
+				"command": "make",
+				"args": [
+					"-j${nproc}"
+				]
+			},
+			"problemMatcher": {
+				"owner": "cpp",
+				"fileLocation": ["absolute"],
+				"pattern": {
+						"regexp": "^(.*):(\\d+):\\s+(.*)$",
+						"file": 1,
+						"line": 2,
+						"message": 3
+				}
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Clean",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"windows": {
+				"command": "rm",
+				"args": [
+					"/s",
+					"/q",
+					"build"
+				]
+			},
+			"linux": {
+				"command": "rm",
+				"args": [
+					"-rf",
+					"--one-file-system",
+					"build"
+				]
+			},
+			"problemMatcher": []
+		}
+	]
+}
