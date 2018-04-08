@@ -19,3 +19,19 @@ conan install . -s build_type=Debug -s arch=x86_64 -s compiler.runtime=MTd --bui
 mkdir build && cd build
 cmake -G "Visual Studio 15 2017 Win64" .. -DCMAKE_BUILD_TYPE=Debug
 ```
+
+## Directions for Ubuntu 16.04 LTS
+
+```bash
+conan install . -s build_type=Debug -s arch=x86_64 --build=missing
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Debug
+```
+
+## A bare-bones `aperture.cfg` file
+
+```ini
+http_listen_port = <port number>
+caps_token = 2960079
+whip_url = whip://<password>@<ip>:32700
+```
