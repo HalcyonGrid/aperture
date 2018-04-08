@@ -5,7 +5,7 @@ mesh data to viewer software connected to the InWorldz grid
 
 ### Build requirements
 - [CMake 3.8.2 or later](https://cmake.org/)
-- [Conan 0.28.1 or later](https://www.conan.io/)
+- [Conan 1.2.1 or later](https://www.conan.io/)
 
 You will need to add the Bincrafters conan repositores to obtain prebuilt packages:
 ```
