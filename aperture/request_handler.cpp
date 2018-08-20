@@ -164,8 +164,10 @@ namespace http {
 			// grab the query string parts
 			QueryString queryString = decode_query_string(req.uri);
 
-			if (queryString.find("texture_id") == queryString.end() &&
-				queryString.find("mesh_id") == queryString.end())
+			bool isTextureRequest = queryString.find("texture_id") != queryString.end();
+			bool isMeshRequest = queryString.find("mesh_id") != queryString.end();
+
+			if (!(isTextureRequest || isMeshRequest))
 			{
 				AppLog::instance().out()
 					<< "[HTTP] Bad request for asset: mesh_id nor texture_id supplied "
@@ -177,10 +179,10 @@ namespace http {
 			}
 
 			std::string assetId;
-			if (queryString.find("texture_id") != queryString.end()) {
+			if (isTextureRequest) {
 				assetId = queryString["texture_id"];
 
-			} else if (queryString.find("mesh_id") != queryString.end()) {
+			} else if (isMeshRequest) {
 				assetId = queryString["mesh_id"];
 
 				/*for (auto header : req.headers)
