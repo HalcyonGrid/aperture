@@ -33,6 +33,12 @@ Launch the following from a preprepared CMD or PS window.
 buid.cmd
 ```
 
+Then open the resulting project file in Visual Studio 2017 and compile.
+
+### VSCode
+
+You'll need the [ms-vscode.cpptools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) extension.
+
 ### Directions for Ubuntu 16.04 LTS 64-bit
 
 Be sure to have `build-essentials` installed in addition to the above requirements.
