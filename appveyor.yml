@@ -4,6 +4,13 @@ image:
 platform:
   - x64
 
+skip_commits:
+  files:
+  - doc/*
+  - README.md
+  - .gitignore
+  - LICENSE
+
 install:
   - cmd: echo "Downloading conan..."
   - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
