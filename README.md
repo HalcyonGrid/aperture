@@ -3,6 +3,12 @@
 Aperture is a simple not quite compliant HTTP/1.1 server that sends texture and
 mesh data to viewer software connected to the InWorldz grid
 
+## Build Status
+* Current status: [![Build status](https://ci.appveyor.com/api/projects/status/0p1r2rssgtcqiisl?svg=true)](https://ci.appveyor.com/project/HalcyonGrid/aperture)
+* Master branch: [![Build status](https://ci.appveyor.com/api/projects/status/0p1r2rssgtcqiisl/branch/master?svg=true)](https://ci.appveyor.com/project/HalcyonGrid/aperture/branch/master)
+
+Latest release: [https://github.com/HalcyonGrid/aperture/releases](https://github.com/HalcyonGrid/aperture/releases)
+
 ### Build requirements
 - [CMake 3.8.2 or later](https://cmake.org/)
 - [Conan 1.2.1 or later](https://www.conan.io/)
