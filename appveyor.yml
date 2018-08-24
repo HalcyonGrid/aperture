@@ -1,8 +1,11 @@
 version: 1.0.{build}
+
 image:
-  - Visual Studio 2017
+- Visual Studio 2017
+- Ubuntu
+
 platform:
-  - x64
+- x64
 
 skip_commits:
   files:
@@ -11,20 +14,44 @@ skip_commits:
   - .gitignore
   - LICENSE
 
+cache:
+- envs -> .appveyor.yml # Conan installation
+- c:\conanData -> conanfile.txt
+- /tmp/conanData -> conanfile.txt
+- conanbuildinfo.cmake -> conanfile.txt
+- conanbuildinfo.txt -> conanfile.txt
+- conaninfo.txt -> conanfile.txt
+- build -> CMakeLists.txt
+
 install:
-  - cmd: echo "Downloading conan..."
-  - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
-  - cmd: pip.exe install conan --upgrade
-  - cmd: conan user # Create the conan data directory
-  - cmd: conan --version
-  - cmd: conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+- echo "Downloading conan..."
+- cmd: SET CONAN_USER_HOME=c:\conanData
+- sh: export CONAN_USER_HOME=/tmp/conanData
+- cmd: set PATH=%PATH%;%PYTHON%/Scripts/
+- cmd: pip.exe install conan --upgrade
+- sh: sudo -H pip install conan --upgrade
+- conan user # Create the conan data directory
+- conan --version
+- conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+
+before_build:
+- ps: |
+    if ($isLinux) {
+      $env:EDITION = "linux"
+    } else {
+      $env:EDITION = "windows"
+    }
 
 build_script:
-  - cmd: mkdir build
-  - cmd: conan install . -s build_type=Release -s arch=x86_64 -s compiler.runtime=MT --build=missing
-  - cmd: cd build
-  - cmd: cmake ../ -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64"
-  - cmd: cmake --build . --config Release
+- ps: md build -ea 0 > $null
+- cmd: conan install . -s build_type=Release -s arch=x86_64 -s compiler.runtime=MT --build=missing
+- sh: conan install . -s build_type=Release -s arch=x86_64 --build=missing
+- cmd: cd build
+- sh: cd build
+- cmd: cmake ../ -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64"
+- sh: cmake ../ -DCMAKE_BUILD_TYPE=Release
+- cmake --build . --config Release
+
 
  #test_script:
  #  - cmd: cd bin
@@ -32,8 +59,15 @@ build_script:
 
 artifacts:
   - path: 'build\bin\aperture.exe'
-    name: "Aperture"
+    name: Aperture-$(APPVEYOR_BUILD_VERSION)-$(APPVEYOR_REPO_BRANCH)-$(EDITION)
     type: auto
-  - path: 'build\bin\aperture.pdb'
-    name: "Aperture Symbols"
-    type: auto
+
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: DlRS0U90AATbPkzxigCLwaGe1vguHFeC3a0YhMZRA/OYEbLQ8+ybp2OGfqgwpbW4
+  artifact: Aperture-$(APPVEYOR_BUILD_VERSION)-$(APPVEYOR_REPO_BRANCH)-$(EDITION)
+  draft: true
+  prerelease: false
+  on:
+    APPVEYOR_REPO_TAG: true
