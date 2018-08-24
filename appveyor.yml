@@ -43,7 +43,7 @@ before_build:
     }
 
 build_script:
-- ps: md build -ea 0 > $null
+- ps: New-Item -Name build -ErrorAction SilentlyContinue | Out-Null
 - cmd: conan install . -s build_type=Release -s arch=x86_64 -s compiler.runtime=MT --build=missing
 - sh: conan install . -s build_type=Release -s arch=x86_64 --build=missing
 - cmd: cd build
