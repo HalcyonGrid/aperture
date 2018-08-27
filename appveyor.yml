@@ -42,25 +42,35 @@ before_build:
       $env:EDITION = "windows"
     }
 
-build_script:
-- ps: New-Item -Name build -ErrorAction SilentlyContinue
-- cmd: conan install . -s build_type=Release -s arch=x86_64 -s compiler.runtime=MT --build=missing
-- sh: conan install . -s build_type=Release -s arch=x86_64 --build=missing
-- cmd: cd build
-- sh: cd build
-- cmd: cmake ..\ -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64"
-- sh: cmake ../ -DCMAKE_BUILD_TYPE=Release
-- cmake --build . --config Release
+build:
+  parallel: true
+  verbosity: minimal
 
+for:
+-
+  matrix:
+    only:
+    - image: Visual Studio 2017
+  build_script:
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - build.bat Release
+-
+  matrix:
+    only:
+    - image: Ubuntu
+  build_script:
+  - ./build.sh Release
 
- #test_script:
- #  - cmd: cd bin
- #  - cmd: encryption_test.exe
+after_build:
+- ps: Rename-Item -Path bin -NewName aperture-$env:APPVEYOR_BUILD_VERSION-$env:APPVEYOR_REPO_BRANCH-$env:EDITION
+
+# No tests for now.
+test: off
 
 artifacts:
-  - path: 'build\bin\aperture.exe'
-    name: Aperture-$(APPVEYOR_BUILD_VERSION)-$(APPVEYOR_REPO_BRANCH)-$(EDITION)
-    type: auto
+- path: aperture-$(APPVEYOR_BUILD_VERSION)-$(APPVEYOR_REPO_BRANCH)-$(EDITION)
+  name: Aperture-$(APPVEYOR_BUILD_VERSION)-$(APPVEYOR_REPO_BRANCH)-$(EDITION)
+  type: zip
 
 deploy:
   provider: GitHub
