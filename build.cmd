@@ -14,4 +14,5 @@ CD ..
 
 REM Prepare package
 MKDIR bin
+COPY aperture.sample.cfg bin
 COPY build\bin\aperture.exe bin

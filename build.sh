@@ -15,4 +15,5 @@ cd ..
 
 # Prepare package
 mkdir bin 2>/dev/null
+cp aperture.sample.cfg bin/
 cp build/aperture bin/
