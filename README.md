@@ -25,7 +25,7 @@ Once you've compiled, you'll find what you need in the `bin` folder.
 
 ### Directions for Windows 64-bit
 
-Install Visual Studio 2017 installed with C++ tooling and CLI tools in additon to the above requirements.
+Install Visual Studio 2017 installed with C++ tooling and CLI tools in addition to the above requirements.
 
 Launch the following from a preprepared CMD or PS window.
 
