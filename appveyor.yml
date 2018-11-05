@@ -1,8 +1,11 @@
 version: 1.0.{build}
+
 image:
-  - Visual Studio 2017
+- Visual Studio 2017
+- Ubuntu
+
 platform:
-  - x64
+- x64
 
 skip_commits:
   files:
@@ -11,29 +14,70 @@ skip_commits:
   - .gitignore
   - LICENSE
 
+cache:
+- envs -> .appveyor.yml # Conan installation
+- c:\conanData -> conanfile.txt
+- /tmp/conanData -> conanfile.txt
+- conanbuildinfo.cmake -> conanfile.txt
+- conanbuildinfo.txt -> conanfile.txt
+- conaninfo.txt -> conanfile.txt
+- build -> CMakeLists.txt
+
 install:
-  - cmd: echo "Downloading conan..."
-  - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
-  - cmd: pip.exe install conan --upgrade
-  - cmd: conan user # Create the conan data directory
-  - cmd: conan --version
-  - cmd: conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+- echo "Downloading conan..."
+- cmd: SET CONAN_USER_HOME=c:\conanData
+- sh: export CONAN_USER_HOME=/tmp/conanData
+- cmd: set PATH=%PATH%;%PYTHON%/Scripts/
+- cmd: pip.exe install conan --upgrade
+- sh: sudo -H pip install conan --upgrade
+- conan user # Create the conan data directory
+- conan --version
+- conan remote add --force bincrafters https://api.bintray.com/conan/bincrafters/public-conan
 
-build_script:
-  - cmd: mkdir build
-  - cmd: conan install . -s build_type=Release -s arch=x86_64 -s compiler.runtime=MT --build=missing
-  - cmd: cd build
-  - cmd: cmake ../ -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64"
-  - cmd: cmake --build . --config Release
+before_build:
+- ps: |
+    if ($isLinux) {
+      $env:EDITION = "linux"
+    } else {
+      $env:EDITION = "windows"
+    }
 
- #test_script:
- #  - cmd: cd bin
- #  - cmd: encryption_test.exe
+build:
+  parallel: true
+  verbosity: minimal
+
+for:
+-
+  matrix:
+    only:
+    - image: Visual Studio 2017
+  build_script:
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - build.cmd Release
+-
+  matrix:
+    only:
+    - image: Ubuntu
+  build_script:
+  - ./build.sh Release
+
+after_build:
+- ps: Rename-Item -Path bin -NewName aperture-$env:APPVEYOR_BUILD_VERSION-$env:APPVEYOR_REPO_BRANCH-$env:EDITION
+
+# No tests for now.
+test: off
 
 artifacts:
-  - path: 'build\bin\aperture.exe'
-    name: "Aperture"
-    type: auto
-  - path: 'build\bin\aperture.pdb'
-    name: "Aperture Symbols"
-    type: auto
+- path: aperture-$(APPVEYOR_BUILD_VERSION)-$(APPVEYOR_REPO_BRANCH)-$(EDITION)
+  name: Aperture-$(APPVEYOR_BUILD_VERSION)-$(APPVEYOR_REPO_BRANCH)-$(EDITION)
+  type: zip
+
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: DlRS0U90AATbPkzxigCLwaGe1vguHFeC3a0YhMZRA/OYEbLQ8+ybp2OGfqgwpbW4
+  artifact: Aperture-$(APPVEYOR_BUILD_VERSION)-$(APPVEYOR_REPO_BRANCH)-$(EDITION)
+  draft: true
+  prerelease: false
+  on:
+    APPVEYOR_REPO_TAG: true
