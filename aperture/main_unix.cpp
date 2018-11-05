@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
 		AppLog::SetLogStream(&std::cout);
 
-		AppLog::instance().out() << "InWorldz Aperture Server " << VERSION << std::endl;
+		AppLog::instance().out() << "Halcyon Aperture Server " << VERSION << std::endl;
 		AppLog::instance().out() << "Build: " << __DATE__ " " __TIME__ << std::endl;
 
 		auto config = Settings::instance().config();

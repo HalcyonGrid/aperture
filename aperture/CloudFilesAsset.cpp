@@ -4,7 +4,7 @@
 namespace aperture {
 namespace cloudfiles {
 
-CloudFilesAsset::CloudFilesAsset(const std::string& assetId, boost::shared_ptr<InWorldz::Data::Assets::Stratus::StratusAsset> assetBase)
+CloudFilesAsset::CloudFilesAsset(const std::string& assetId, boost::shared_ptr<Halcyon::Data::Assets::Stratus::StratusAsset> assetBase)
 	: _assetId(assetId), _assetBase(assetBase)
 {
 

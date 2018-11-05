@@ -29,7 +29,7 @@ CloudFilesGetWorker::CloudFilesGetWorker(CloudFilesConnector& parent, boost::asi
 	: _parent(parent), _ioService(ioService)
 {
 	_curl = curl_easy_init();
-	if (! _curl) throw std::runtime_error(__FILE__ " curl_easy_init() failed"); 
+	if (! _curl) throw std::runtime_error(__FILE__ " curl_easy_init() failed");
 
 	_containerPrefix = Settings::instance().config()["cf_container_prefix"].as<std::string>();
 	_debug = Settings::instance().config()["debug"].as<bool>();
@@ -88,7 +88,7 @@ std::string CloudFilesGetWorker::buildContainerUrl(const std::string& assetId) c
 
 void CloudFilesGetWorker::performAssetRequest(const std::string& assetId, boost::function<void (IAsset::ptr)> callback, bool isRetry)
 {
-	struct curl_slist *headers=NULL;  
+	struct curl_slist *headers=NULL;
 	std::string authHeader((boost::format("X-Auth-Token: %1%") % _parent.getAuthorizer()->getAuthToken()).str());
 	headers = curl_slist_append(headers, authHeader.c_str());
 
@@ -107,12 +107,12 @@ void CloudFilesGetWorker::performAssetRequest(const std::string& assetId, boost:
 	curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, &HttpRequestHandler::onData);
 	curl_easy_setopt(_curl, CURLOPT_WRITEDATA, &_reqHandler);
 	curl_easy_setopt(_curl, CURLOPT_HTTPHEADER, headers);
-	
+
 	if (_debug) {
 		_ioService.post([=]{ AppLog::instance().out() << "[CLOUDFILES] Getting " << url << std::endl; });
 	}
 
-	CURLcode res = curl_easy_perform(_curl); 
+	CURLcode res = curl_easy_perform(_curl);
 	if (res != CURLE_OK) {
 		_ioService.post(std::bind(callback, nullptr));
 		throw std::runtime_error(std::string("curl_easy_perform() failed: ") + curl_easy_strerror(res));
@@ -140,8 +140,8 @@ void CloudFilesGetWorker::performAssetRequest(const std::string& assetId, boost:
 	{
 		//no errors, decode
 		_reqHandler.getLastBody().seekg(0, std::ios_base::beg);
-		
-		boost::shared_ptr<InWorldz::Data::Assets::Stratus::StratusAsset> stAsset(new InWorldz::Data::Assets::Stratus::StratusAsset());
+
+		boost::shared_ptr<Halcyon::Data::Assets::Stratus::StratusAsset> stAsset(new Halcyon::Data::Assets::Stratus::StratusAsset());
 		if (! stAsset->ParseFromIstream(&_reqHandler.getLastBody())) {
 			_ioService.post(std::bind(callback, nullptr));
 			throw std::runtime_error("Unable to deserialize asset " + assetId);
