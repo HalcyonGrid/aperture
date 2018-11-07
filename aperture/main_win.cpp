@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 
 		AppLog::SetLogStream(&std::cout);
 
-		AppLog::instance().out() << "InWorldz Aperture Server " << APERTURE_VERSION << std::endl;
+		AppLog::instance().out() << "Halcyon Aperture Server " << APERTURE_VERSION << std::endl;
 		AppLog::instance().out() << "Build: " << __DATE__ " " __TIME__ << std::endl;
 
 		auto config = Settings::instance().config();
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 
 		// Initialize server
 		std::string capsToken = config["caps_token"].as<std::string>();
-		http::server::server s(config["http_listen_port"].as<unsigned short>(), 
+		http::server::server s(config["http_listen_port"].as<unsigned short>(),
 			ioService, assetServer, cfConnector, capsToken);
 
 		// Set console control handler to allow server to be stopped.

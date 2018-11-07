@@ -1,5 +1,5 @@
 syntax = "proto2";
-package InWorldz.Data.Assets.Stratus;
+package Halcyon.Data.Assets.Stratus;
 import "bcl.proto"; // schema for protobuf-net's handling of core .NET types
 
 message StratusAsset {

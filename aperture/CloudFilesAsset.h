@@ -15,10 +15,10 @@ public:
 
 private:
 	std::string _assetId;
-	boost::shared_ptr<InWorldz::Data::Assets::Stratus::StratusAsset> _assetBase;
+	boost::shared_ptr<Halcyon::Data::Assets::Stratus::StratusAsset> _assetBase;
 
 public:
-	CloudFilesAsset(const std::string& assetId, boost::shared_ptr<InWorldz::Data::Assets::Stratus::StratusAsset> assetBase);
+	CloudFilesAsset(const std::string& assetId, boost::shared_ptr<Halcyon::Data::Assets::Stratus::StratusAsset> assetBase);
 	virtual ~CloudFilesAsset();
 
 	virtual std::string getUUID() const;

@@ -1,7 +1,6 @@
-# InWorldz aperture texture and mesh server
+# Halcyon Aperture asset delivery server
 
-Aperture is a simple not quite compliant HTTP/1.1 server that sends texture and
-mesh data to viewer software connected to the InWorldz grid
+Aperture is a simple, not quite compliant, HTTP/1.1 server that sends asset data to viewer software connected to Halcyon-based grids.
 
 ## Build Status
 * Current status: [![Build status](https://ci.appveyor.com/api/projects/status/0p1r2rssgtcqiisl?svg=true)](https://ci.appveyor.com/project/HalcyonGrid/aperture)
