@@ -15,7 +15,7 @@
 #include <sstream>
 #include <string>
 #include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string.hpp>    
+#include <boost/algorithm/string.hpp>
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <limits>
@@ -33,7 +33,7 @@ using namespace aperture;
 
 namespace http {
 	namespace server {
-		
+
 		request_handler::request_handler(aperture::IAssetServer::ptr whipAssetServer,
 			aperture::IAssetServer::ptr cfConnector, const std::string& capsToken)
 			: _whipAssetServer(whipAssetServer), _cfConnector(cfConnector), _capsToken(capsToken), _useCache(false)
@@ -109,7 +109,7 @@ namespace http {
 					state = DS_IN_PARAM_VAL;
 					continue;
 				}
-				
+
 				if (state == DS_IN_PARAM_NAME)
 				{
 					currParamName += url[i];
@@ -146,13 +146,13 @@ namespace http {
 			return retQuery;
 		}
 
-		void request_handler::handle_asset_request(const request& req, reply& rep, 
+		void request_handler::handle_asset_request(const request& req, reply& rep,
 			boost::function<void()> completionCallback,
 			std::vector<std::string>& urlParts)
 		{
-			if (urlParts.size() < 5) 
+			if (urlParts.size() < 5)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP] Bad request for asset, not enough URL parts"
 					<< std::endl;
 
@@ -164,10 +164,12 @@ namespace http {
 			// grab the query string parts
 			QueryString queryString = decode_query_string(req.uri);
 
-			if (queryString.find("texture_id") == queryString.end() &&
-				queryString.find("mesh_id") == queryString.end())
+			bool isTextureRequest = queryString.find("texture_id") != queryString.end();
+			bool isMeshRequest = queryString.find("mesh_id") != queryString.end();
+
+			if (!(isTextureRequest || isMeshRequest))
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP] Bad request for asset: mesh_id nor texture_id supplied "
 					<< std::endl;
 
@@ -177,26 +179,26 @@ namespace http {
 			}
 
 			std::string assetId;
-			if (queryString.find("texture_id") != queryString.end()) {
+			if (isTextureRequest) {
 				assetId = queryString["texture_id"];
 
-			} else if (queryString.find("mesh_id") != queryString.end()) {
+			} else if (isMeshRequest) {
 				assetId = queryString["mesh_id"];
 
 				/*for (auto header : req.headers)
 				{
-					AppLog::instance().out() 
+					AppLog::instance().out()
 						<< "[HTTP] Mesh Header: " << header.name << ": " << header.value
 						<< std::endl;
 				}*/
 			}
 
 			boost::replace_all(assetId, "-", "");
-			
+
 			//check texture id
-			if (! Validator::IsValidUUID(assetId)) 
+			if (! Validator::IsValidUUID(assetId))
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP] Bad request for asset, invalid UUID supplied"
 					<< std::endl;
 
@@ -212,11 +214,11 @@ namespace http {
 				completionCallback();
 				return;
 			}
-			
+
 			rep.token = urlParts[3];
-			
+
 			PackedRequestInfo reqInfo = {
-				assetId, 
+				assetId,
 				completionCallback,
 				&rep,
 				queryString,
@@ -236,7 +238,7 @@ namespace http {
 
 				if (_debug)
 				{
-					AppLog::instance().out() 
+					AppLog::instance().out()
 						<< "[HTTP] Queueing asset request since cap " << urlParts[3] << " is paused"
 						<< std::endl;
 				}
@@ -265,7 +267,7 @@ namespace http {
 				aperture::IAsset::ptr asset = _assetCache->fetch(reqInfo.AssetId);
 				if (asset) {
 					if (_debug) {
-						AppLog::instance().out() 
+						AppLog::instance().out()
 							<< "[HTTP] Serving asset " << reqInfo.AssetId << " from cache "
 							<< std::endl;
 					}
@@ -275,36 +277,36 @@ namespace http {
 					return;
 				}
 			}
-			
+
 			if (_whipAssetServer && _whipAssetServer->isConnected())
 			{
 				if (_debug)
 				{
-					AppLog::instance().out() 
+					AppLog::instance().out()
 						<< "[HTTP] Posting WHIP request for asset " << reqInfo.AssetId
 						<< std::endl;
 				}
 
 				reqInfo.ServedFromWhip = true;
 
-				_whipAssetServer->getAsset(reqInfo.AssetId, 
+				_whipAssetServer->getAsset(reqInfo.AssetId,
 					boost::bind(&request_handler::asset_response_callback, this, reqInfo, _1));
-			} 
+			}
 			else if (_cfConnector)
 			{
 				if (_debug)
 				{
-					AppLog::instance().out() 
+					AppLog::instance().out()
 						<< "[HTTP] Posting CF request for asset " << reqInfo.AssetId
 						<< std::endl;
 				}
 
 				reqInfo.ServedFromCF = true;
 
-				_cfConnector->getAsset(reqInfo.AssetId, 
+				_cfConnector->getAsset(reqInfo.AssetId,
 					boost::bind(&request_handler::asset_response_callback, this, reqInfo, _1));
 			}
-			else 
+			else
 			{
 				AppLog::instance().out()
 					<< "[HTTP] Connection to WHIP server is not established. Sending HTTP 500"
@@ -315,13 +317,13 @@ namespace http {
 			}
 		}
 
-		void request_handler::handle_add_cap(const request& req, reply& rep, 
+		void request_handler::handle_add_cap(const request& req, reply& rep,
 			boost::function<void()> completionCallback,
 			std::vector<std::string>& urlParts)
 		{
 			if (urlParts.size() < 6)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not adding CAP, not enough URL parts"
 					<< std::endl;
 
@@ -331,9 +333,9 @@ namespace http {
 			}
 
 			//the 4th part should be the token and should match our settings
-			if (urlParts[4] != _capsToken) 
+			if (urlParts[4] != _capsToken)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not adding CAP, caps token doesnt match"
 					<< std::endl;
 
@@ -344,7 +346,7 @@ namespace http {
 
 			if (_debug)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Adding CAP " << urlParts[5]
 					<< std::endl;
 			}
@@ -365,13 +367,13 @@ namespace http {
 			completionCallback();
 		}
 
-		void request_handler::handle_rem_cap(const request& req, reply& rep, 
+		void request_handler::handle_rem_cap(const request& req, reply& rep,
 			boost::function<void()> completionCallback,
 			std::vector<std::string>& urlParts)
 		{
 			if (urlParts.size() < 6)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not removing CAP, not enough URL parts"
 					<< std::endl;
 
@@ -381,9 +383,9 @@ namespace http {
 			}
 
 			//the 4th part should be the token and should match our settings
-			if (urlParts[4] != _capsToken) 
+			if (urlParts[4] != _capsToken)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not removing CAP, caps token doesnt match"
 					<< std::endl;
 
@@ -394,7 +396,7 @@ namespace http {
 
 			if (_debug)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Removing CAP " << urlParts[5]
 					<< std::endl;
 			}
@@ -412,13 +414,13 @@ namespace http {
 			completionCallback();
 		}
 
-		void request_handler::handle_pause_cap(const request& req, reply& rep, 
+		void request_handler::handle_pause_cap(const request& req, reply& rep,
 			boost::function<void()> completionCallback,
 			std::vector<std::string>& urlParts)
 		{
 			if (urlParts.size() < 6)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not pausing CAP, not enough URL parts"
 					<< std::endl;
 
@@ -428,9 +430,9 @@ namespace http {
 			}
 
 			//the 4th part should be the token and should match our settings
-			if (urlParts[4] != _capsToken) 
+			if (urlParts[4] != _capsToken)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not pausing CAP, caps token doesnt match"
 					<< std::endl;
 
@@ -441,7 +443,7 @@ namespace http {
 
 			if (_debug)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Pausing CAP " << urlParts[5]
 					<< std::endl;
 			}
@@ -456,13 +458,13 @@ namespace http {
 			completionCallback();
 		}
 
-		void request_handler::handle_resume_cap(const request& req, reply& rep, 
+		void request_handler::handle_resume_cap(const request& req, reply& rep,
 			boost::function<void()> completionCallback,
 			std::vector<std::string>& urlParts)
 		{
 			if (urlParts.size() < 6)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not removing CAP, not enough URL parts"
 					<< std::endl;
 
@@ -472,9 +474,9 @@ namespace http {
 			}
 
 			//the 4th part should be the token and should match our settings
-			if (urlParts[4] != _capsToken) 
+			if (urlParts[4] != _capsToken)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not resuming CAP, caps token doesnt match"
 					<< std::endl;
 
@@ -485,7 +487,7 @@ namespace http {
 
 			if (_debug)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Resuming CAP " << urlParts[5]
 					<< std::endl;
 			}
@@ -503,7 +505,7 @@ namespace http {
 
 					if (_debug)
 					{
-						AppLog::instance().out() 
+						AppLog::instance().out()
 							<< "[HTTP] Dequeueing asset request for " << urlParts[3] << " unpaused"
 							<< std::endl;
 					}
@@ -518,13 +520,13 @@ namespace http {
 			completionCallback();
 		}
 
-		void request_handler::handle_limit_cap(const request& req, reply& rep, 
+		void request_handler::handle_limit_cap(const request& req, reply& rep,
 			boost::function<void()> completionCallback,
 			std::vector<std::string>& urlParts)
 		{
 			if (urlParts.size() < 7)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not limiting CAP, not enough URL parts"
 					<< std::endl;
 
@@ -534,9 +536,9 @@ namespace http {
 			}
 
 			//the 4th part should be the token and should match our settings
-			if (urlParts[4] != _capsToken) 
+			if (urlParts[4] != _capsToken)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not limiting CAP, caps token doesnt match"
 					<< std::endl;
 
@@ -552,7 +554,7 @@ namespace http {
 			}
 			catch (const boost::bad_lexical_cast&)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not limiting CAP " << urlParts[5] << ". Invalid limit specified."
 					<< std::endl;
 
@@ -575,14 +577,14 @@ namespace http {
 
 			if (_debug)
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Setting CAP limit for " << urlParts[5] << " to " << bwLimit
 					<< std::endl;
 			}
 
 			if (_validCapIds.find(urlParts[5]) == _validCapIds.end())
 			{
-				AppLog::instance().out() 
+				AppLog::instance().out()
 					<< "[HTTP][CAPS] Not limiting CAP " << urlParts[5] << ". Cap does not exist."
 					<< std::endl;
 
@@ -597,7 +599,7 @@ namespace http {
 			completionCallback();
 		}
 
-		void request_handler::handle_request(const request& req, reply& rep, 
+		void request_handler::handle_request(const request& req, reply& rep,
 			boost::function<void()> completionCallback)
 		{
 			//cut up the request by /
@@ -609,7 +611,7 @@ namespace http {
 			// /CAPS/HTT/REMCAP/{TOKEN}/{CAP_UUID}
 			// /CAPS/HTT/{CAP_UUID}/?texture_id={TEXTUREUUID}
 
-			if (reqParts.size() < 5) 
+			if (reqParts.size() < 5)
 			{
 				rep = reply::stock_reply(reply::bad_request);
 				completionCallback();
@@ -624,14 +626,14 @@ namespace http {
 			}
 
 			//what type of request is this?
-			if (reqParts[3] == "ADDCAP") 
+			if (reqParts[3] == "ADDCAP")
 			{
 				this->handle_add_cap(req, rep, completionCallback, reqParts);
-				
+
 				return;
 			}
 			else
-			if (reqParts[3] == "REMCAP") 
+			if (reqParts[3] == "REMCAP")
 			{
 				this->handle_rem_cap(req, rep, completionCallback, reqParts);
 
@@ -722,7 +724,7 @@ namespace http {
 			if (strs.size() == 2) {
 				//could be just and end or is start an end
 
-				if (strs[0] == "" && strs[1] != "") 
+				if (strs[0] == "" && strs[1] != "")
 				{
 					//just the end
 					return boost::make_tuple(0, boost::lexical_cast<unsigned int>(strs[1]));
@@ -736,7 +738,7 @@ namespace http {
 				else if (strs[0] != "" && strs[1] != "")
 				{
 					//start and end
-					return boost::make_tuple(boost::lexical_cast<unsigned int>(strs[0]), 
+					return boost::make_tuple(boost::lexical_cast<unsigned int>(strs[0]),
 											 boost::lexical_cast<unsigned int>(strs[1]) );
 				}
 			}
@@ -762,7 +764,7 @@ namespace http {
 					reqInfo.ServedFromWhip = false;
 					reqInfo.ServedFromCF = true;
 
-					_cfConnector->getAsset(reqInfo.AssetId, 
+					_cfConnector->getAsset(reqInfo.AssetId,
 						boost::bind(&request_handler::asset_response_callback, this, reqInfo, _1));
 
 					return;
@@ -799,7 +801,7 @@ namespace http {
                 }
 
 				AppLog::instance().out()
-					<< "[HTTP] Not sending non-texture asset " 
+					<< "[HTTP] Not sending non-texture asset "
                     << reqInfo.AssetId
                     << " from "
                     << source
@@ -832,12 +834,12 @@ namespace http {
 					<< "[HTTP] Problem when preparing response to client: "
 					<< e.what()
 					<< std::endl;
-				
+
 				header rangeHeader;
 				rangeHeader.name = "Content-Range";
-				rangeHeader.value 
-					=	std::string("bytes 0") + 
-							"-" + 
+				rangeHeader.value
+					=	std::string("bytes 0") +
+							"-" +
 						boost::lexical_cast<std::string>(errorReportingFullSz - 1) +
 							"/" +
 						boost::lexical_cast<std::string>(errorReportingFullSz);
@@ -872,7 +874,7 @@ namespace http {
 				}
 			}
 
-			size_t fullSz = hasRangeHeader 
+			size_t fullSz = hasRangeHeader
 			    ? asset->copyAssetData(reqInfo.Reply->content, rngBegin, rngEnd)
 			    : asset->copyAssetData(reqInfo.Reply->content);
 
@@ -889,7 +891,7 @@ namespace http {
 				reqInfo.Reply->status = reply::partial_content;
 				reqInfo.Reply->headers.resize(3);
 				reqInfo.Reply->headers[2].name = "Content-Range";
-				reqInfo.Reply->headers[2].value 
+				reqInfo.Reply->headers[2].value
 					=	"bytes " + boost::lexical_cast<std::string>(rngBegin) +
 						"-" +
 						boost::lexical_cast<std::string>(rngEnd) +
@@ -899,7 +901,7 @@ namespace http {
 				if (_debug) {
 					AppLog::instance().out()
 						<< "[HTTP] Sending range to client "
-						<< reqInfo.Reply->headers[2].value 
+						<< reqInfo.Reply->headers[2].value
 						<< " for asset "
 						<< reqInfo.AssetId
 						<< " " << contentType
