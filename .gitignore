@@ -27,8 +27,9 @@
 *.out
 *.app
 
-# CMake build directory
+# CMake build directory and results folder
 build/
+bin/
 
 # Conan build files
 conanbuildinfo.*
