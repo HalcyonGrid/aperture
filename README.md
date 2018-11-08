@@ -13,7 +13,7 @@ If you would rather compile from scratch instead of downloading a binary release
 
 ### Build requirements
 - [CMake 3.8.2 or later](https://cmake.org/)
-- [Conan 1.2.1 or later](https://www.conan.io/)
+- [Conan 1.8.0 or later](https://www.conan.io/)
 
 You will need to add the Bincrafters conan repository to obtain prebuilt packages:
 ```
