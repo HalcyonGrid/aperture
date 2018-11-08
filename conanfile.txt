@@ -1,7 +1,7 @@
 [requires]
 boost/1.66.0@conan/stable
 libcurl/7.56.1@bincrafters/stable
-protobuf/3.5.1@bincrafters/stable
+protobuf/3.5.2@bincrafters/stable
 jsonformoderncpp/2.1.1@vthiery/stable
 zlib/1.2.11@conan/stable
 
