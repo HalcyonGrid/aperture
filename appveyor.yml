@@ -2,7 +2,12 @@ version: 1.0.{build}
 
 image:
 - Visual Studio 2017
-#- Ubuntu ## Disabled until we can solve the Boost problem.
+- Ubuntu
+
+# Ubuntu build allowed to fail until we can solve the Boost problem.
+matrix:
+  allow_failures:
+    - image: Ubuntu
 
 platform:
 - x64
