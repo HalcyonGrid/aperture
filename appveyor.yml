@@ -2,7 +2,7 @@ version: 1.0.{build}
 
 image:
 - Visual Studio 2017
-- Ubuntu
+#- Ubuntu ## Disabled until we can solve the Boost problem.
 
 platform:
 - x64
